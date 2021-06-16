@@ -20,6 +20,7 @@ type File struct {
 	LocalFD  *model.FileDescriptor // 本文件的类型描述表
 	GlobalFD *model.FileDescriptor // 全局的类型描述表
 	FileName string
+	RawFileName string
 	coreFile *xlsx.File
 
 	dataSheets  []*DataSheet
@@ -62,22 +63,30 @@ func (self *File) ExportLocalType(mainFile *File) bool {
 		}
 	}
 
-	if typeSheet == nil {
-		log.Errorf("%s", i18n.String(i18n.File_TypeSheetNotFound))
-		return false
-	}
+	// 2021.6.16 -- 类型信息统一放在 globals.xlsx 中, 就不要求每个文件都有这个页签了
+	//if typeSheet == nil {
+	//	log.Errorf("%s", i18n.String(i18n.File_TypeSheetNotFound))
+	//	return false
+	//}
 
+	dataSheetName := ""
 	// 解析表头
 	for _, rawSheet := range self.coreFile.Sheets {
 
 		// 是数据表
-		if !isTypeSheet(rawSheet.Name) {
+		if !isTypeSheet(rawSheet.Name) && rawSheet.Name == self.FileName{
 			dSheet := newDataSheet(NewSheet(self, rawSheet))
 
 			if !dSheet.Valid() {
 				continue
 			}
 
+			dataSheetName = rawSheet.Name
+			if typeSheet == nil{
+				self.LocalFD.Pragma.KVPair.SetString("TableName", dataSheetName)
+				self.LocalFD.Pragma.KVPair.SetString("Package", "table")
+				self.LocalFD.Pragma.KVPair.SetString("CSClassHeader", "[System.Serializable]")
+			}
 			log.Infof("            %s", rawSheet.Name)
 
 			dataHeader := newDataHeadSheet()
