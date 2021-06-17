@@ -154,7 +154,7 @@ namespace table
 		/// 條件類型(1:血量;2:數量;3:長度;4:波數;)
 		/// </summary>
 		public:
- 		int conditiontype_ = 0; // 條件類型
+ 		int conditionpattern_ = 0; // 條件類型
 	
 		/// <summary> 
 		/// 判定(1:大於;2:大於等於;3:等於;4:小於等於;5:小於;)
@@ -189,7 +189,7 @@ namespace table
 		/// 事件(1:技能ID;2:說話;)
 		/// </summary>
 		public:
- 		int eventtype_ = 0; // 事件
+ 		int eventpattern_ = 0; // 事件
 	
 		/// <summary> 
 		/// 參數
@@ -573,7 +573,7 @@ namespace table
 		/// 修改类型（1:替代；2:新增；3:数值增加；4：数值乘积）新增只应用于数组中
 		/// </summary>
 		public:
- 		int type_ = 0; // 修改类型
+ 		int pattern_ = 0; // 修改类型
 	
 		/// <summary> 
 		/// 表示修改的是第几项魔法，可为空，空值表示第一项，只在修改魔法列表时生效 修改的魔法与项数对应
@@ -670,7 +670,7 @@ namespace table
 	
 		
 		public:
- 		int type_ = 0; // 货币类型
+ 		int pattern_ = 0; // 货币类型
 	
 		
 		public:
@@ -725,7 +725,7 @@ namespace table
 	
 
 	// Defined in table: Globals
-	class TypeRandom
+	class typeRandom
 	{
 	public:
 	
@@ -1288,7 +1288,7 @@ namespace table
                 	break; 
                 	case 0x10001:
                 	{
-						ins.conditiontype_ = reader.ReadInt32();
+						ins.conditionpattern_ = reader.ReadInt32();
                 	}
                 	break; 
                 	case 0x10002:
@@ -1321,7 +1321,7 @@ namespace table
                 	break; 
                 	case 0x10001:
                 	{
-						ins.eventtype_ = reader.ReadInt32();
+						ins.eventpattern_ = reader.ReadInt32();
                 	}
                 	break; 
                 	case 0x10002:
@@ -1764,7 +1764,7 @@ namespace table
                 	break; 
                 	case 0x10001:
                 	{
-						ins.type_ = reader.ReadInt32();
+						ins.pattern_ = reader.ReadInt32();
                 	}
                 	break; 
                 	case 0x10002:
@@ -1863,7 +1863,7 @@ namespace table
                 	break; 
                 	case 0x10001:
                 	{
-						ins.type_ = reader.ReadInt32();
+						ins.pattern_ = reader.ReadInt32();
                 	}
                 	break; 
                 	case 0x50002:
@@ -1923,7 +1923,7 @@ namespace table
 			
 		}
 	public:
-		static void Deserialize( TypeRandom& ins, tabtoy::DataReader& reader )
+		static void Deserialize( typeRandom& ins, tabtoy::DataReader& reader )
 		{
  			int tag = -1;
             while ( -1 != (tag = reader.ReadTag()))

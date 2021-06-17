@@ -125,7 +125,7 @@ namespace table
         }
 		
 		public string GetBuildID(){
-			return "98b0803653b6c2115d3f65a3dc03e083";
+			return "0ebd71a1d3f089707522a6eb4bb8ed5e";
 		}
 	
 		#endregion
@@ -470,7 +470,7 @@ namespace table
                 	break; 
                 	case 0x10001:
                 	{
-						ins.conditiontype = reader.ReadInt32();
+						ins.conditionpattern = reader.ReadInt32();
                 	}
                 	break; 
                 	case 0x10002:
@@ -516,7 +516,7 @@ namespace table
                 	break; 
                 	case 0x10001:
                 	{
-						ins.eventtype = reader.ReadInt32();
+						ins.eventpattern = reader.ReadInt32();
                 	}
                 	break; 
                 	case 0x10002:
@@ -1167,7 +1167,7 @@ namespace table
                 	break; 
                 	case 0x10001:
                 	{
-						ins.type = reader.ReadInt32();
+						ins.pattern = reader.ReadInt32();
                 	}
                 	break; 
                 	case 0x10002:
@@ -1305,7 +1305,7 @@ namespace table
                 	break; 
                 	case 0x10001:
                 	{
-						ins.type = reader.ReadInt32();
+						ins.pattern = reader.ReadInt32();
                 	}
                 	break; 
                 	case 0x50002:
@@ -1390,20 +1390,20 @@ namespace table
 
 			
 		}
-		static tabtoy.DeserializeHandler<TypeRandom> _TypeRandomDeserializeHandler;
-		static tabtoy.DeserializeHandler<TypeRandom> TypeRandomDeserializeHandler
+		static tabtoy.DeserializeHandler<typeRandom> _typeRandomDeserializeHandler;
+		static tabtoy.DeserializeHandler<typeRandom> typeRandomDeserializeHandler
 		{
 			get
 			{
-				if (_TypeRandomDeserializeHandler == null )
+				if (_typeRandomDeserializeHandler == null )
 				{
-					_TypeRandomDeserializeHandler = new tabtoy.DeserializeHandler<TypeRandom>(Deserialize);
+					_typeRandomDeserializeHandler = new tabtoy.DeserializeHandler<typeRandom>(Deserialize);
 				}
 
-				return _TypeRandomDeserializeHandler;
+				return _typeRandomDeserializeHandler;
 			}
 		}
-		public static void Deserialize( TypeRandom ins, tabtoy.DataReader reader )
+		public static void Deserialize( typeRandom ins, tabtoy.DataReader reader )
 		{
 			
  			int tag = -1;
@@ -1803,7 +1803,7 @@ namespace table
 		/// <summary> 
 		/// 條件類型(1:血量;2:數量;3:長度;4:波數;)
 		/// </summary>
-		public int conditiontype = 0; // 條件類型
+		public int conditionpattern = 0; // 條件類型
 		
 		/// <summary> 
 		/// 判定(1:大於;2:大於等於;3:等於;4:小於等於;5:小於;)
@@ -1833,7 +1833,7 @@ namespace table
 		/// <summary> 
 		/// 事件(1:技能ID;2:說話;)
 		/// </summary>
-		public int eventtype = 0; // 事件
+		public int eventpattern = 0; // 事件
 		
 		/// <summary> 
 		/// 參數
@@ -2154,7 +2154,7 @@ namespace table
 		/// <summary> 
 		/// 修改类型（1:替代；2:新增；3:数值增加；4：数值乘积）新增只应用于数组中
 		/// </summary>
-		public int type = 0; // 修改类型
+		public int pattern = 0; // 修改类型
 		
 		/// <summary> 
 		/// 表示修改的是第几项魔法，可为空，空值表示第一项，只在修改魔法列表时生效 修改的魔法与项数对应
@@ -2236,7 +2236,7 @@ namespace table
 		public string language = ""; // 语言地区
 		
 		
-		public int type = 0; // 货币类型
+		public int pattern = 0; // 货币类型
 		
 		
 		public float price = 0f; // 价格数值
@@ -2283,7 +2283,7 @@ namespace table
 
 	// Defined in table: Globals
 	
-	public partial class TypeRandom
+	public partial class typeRandom
 	{
 	
 		
