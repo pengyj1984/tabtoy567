@@ -1,8 +1,11 @@
 package printer
 
 import (
+	"encoding/json"
 	"github.com/davyxu/tabtoy/v2/i18n"
 	"github.com/davyxu/tabtoy/v2/model"
+	"io/ioutil"
+	"os"
 	"strings"
 )
 
@@ -10,6 +13,67 @@ type TableIndex struct {
 	Index *model.FieldDescriptor // 表头里的索引
 	Row   *model.FieldDescriptor // 索引的数据
 }
+
+/////////////////////////////////////////////////
+type SerializeTableData struct {
+	MaxOrder    int            `json:"MaxOrder"`    // 当前最大序号, 用于给新的值用
+	FieldOrders map[string]int `json:"FieldOrders"` // 记录 字段名-序号
+	Index       int32          `json:"Index"`       // 下标
+}
+
+type SerializeData struct {
+	MaxIndex int32                          `json:"MaxIndex"` // 记录当前最大下标值, 用于给新的表用
+	Tables   map[string]*SerializeTableData `json:"Tables"`   // 表信息
+}
+
+func NewSerializeData() *SerializeData {
+	self := &SerializeData{
+		MaxIndex: 0,
+	}
+
+	fileName := "cache.json"
+	_, err := os.Stat(fileName)
+	if os.IsNotExist(err) {
+		log.Errorln("File not exists error")
+		self.Tables = make(map[string]*SerializeTableData)
+	} else {
+		data, err := ioutil.ReadFile(fileName)
+		if err != nil {
+			log.Errorln("Read error, err = ", err)
+			self.Tables = make(map[string]*SerializeTableData)
+		} else {
+			err := json.Unmarshal(data, self)
+			if err != nil {
+				log.Errorln("Unmarshal error, err = ", err)
+				self.Tables = make(map[string]*SerializeTableData)
+			}
+		}
+	}
+
+	return self
+}
+
+func (self *SerializeData) WriteSerializeData() error {
+	fileName := "cache.json"
+	_, err := os.Stat(fileName)
+	if !(os.IsNotExist(err)) {
+		os.Remove(fileName)
+	}
+
+	bytes, err := json.Marshal(self)
+	if err != nil {
+		return err
+	}
+
+	err = ioutil.WriteFile(fileName, bytes, os.ModeAppend)
+	if err != nil {
+		return nil
+	}
+
+	return nil
+}
+
+/////////////////////////////////////////////////
 
 type Globals struct {
 	Version            string
@@ -23,6 +87,10 @@ type Globals struct {
 	GenCSSerailizeCode bool
 	PackageName        string
 	ModList            []string
+
+	/////////////////////////////////////////////////
+	Data *SerializeData // 记录的中间信息
+	/////////////////////////////////////////////////
 
 	Printers []*PrinterContext
 
@@ -181,6 +249,7 @@ func NewGlobals() *Globals {
 		tableByName:    make(map[string]*model.Table),
 		FileDescriptor: model.NewFileDescriptor(),
 		CombineStruct:  model.NewDescriptor(),
+		Data:           NewSerializeData(),
 	}
 
 	return self

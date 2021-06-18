@@ -83,7 +83,9 @@ func V2Entry() {
 		g.AddOutputType("modlist", *paramModifyList)
 	}
 
-	if !v2.Run(g) {
+	if v2.Run(g) {
+		g.Data.WriteSerializeData()
+	} else {
 		os.Exit(1)
 	}
 }

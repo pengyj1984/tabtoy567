@@ -19,7 +19,6 @@ func (self *binaryPrinter) Run(g *Globals) *Stream {
 	fileStresam.WriteString("TT")
 	fileStresam.WriteInt32(combineFileVersion)
 	fileStresam.WriteString(g.BuildID)
-
 	const md5base64Len = 32
 
 	beginPos := fileStresam.Buffer().Len() + 4
@@ -32,6 +31,16 @@ func (self *binaryPrinter) Run(g *Globals) *Stream {
 			log.Infof("%s: %s", i18n.String(i18n.Printer_IgnoredByOutputTag), tab.Name())
 			continue
 		}
+
+		//log.Infof("--------------LocalFD of %s,  len of  descriptors = %d, index = %d---------------", tab.Name(), len(tab.LocalFD.Descriptors), int(index))
+		//log.Infof("%s, %s", tab.LocalFD.Name, tab.LocalFD.Pragma.String())
+		//for k, v := range tab.LocalFD.DescriptorByName{
+		//	log.Infof("key = %s, value = %s", k, v.Name)
+		//	log.Infof("--------------Fields--------------")
+		//	for _, f := range v.Fields{
+		//		log.Infof("Name = %s, Type = %s, Order = %d, EnumValue = %d, Comment = %s", f.Name, f.TypeString(), f.Order, f.EnumValue, f.Comment)
+		//	}
+		//}
 
 		if !writeTableBinary(fileStresam, tab, int32(index)) {
 			return nil
@@ -77,6 +86,9 @@ func writeTableBinary(tabStream *Stream, tab *model.Table, index int32) bool {
 				for _, valueNode := range node.Child {
 
 					// 写入字段索引
+					//t := node.Tag()
+					//t1, name := node.SerializeData()
+					//fmt.Println("non-struct tag = ", strconv.FormatInt(int64(t), 16), ", serialize data = ", t1, ", ", name)
 					rowStream.WriteInt32(node.Tag())
 					rowStream.WriteNodeValue(node.Type, valueNode)
 
@@ -96,6 +108,9 @@ func writeTableBinary(tabStream *Stream, tab *model.Table, index int32) bool {
 							continue
 						}
 
+						//t := fieldNode.Tag()
+						//t1, name := fieldNode.SerializeData()
+						//fmt.Println("struct field tag = ", strconv.FormatInt(int64(t), 16), ", serialize data = ", t1, ", ", name)
 						// 写入字段索引
 						structStream.WriteInt32(fieldNode.Tag())
 
@@ -118,6 +133,7 @@ func writeTableBinary(tabStream *Stream, tab *model.Table, index int32) bool {
 		}
 
 		tabStream.WriteInt32(model.MakeTag(int32(model.FieldType_Table), index))
+		//tabStream.WriteInt32(model.MakeTag(int32(model.FieldType_Table), tab.Index))
 		tabStream.WriteInt32(int32(rowStream.Len()))
 		tabStream.WriteRawBytes(rowStream.Buffer().Bytes())
 	}
