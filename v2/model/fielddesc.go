@@ -52,10 +52,6 @@ func (self *FieldDescriptor) Tag() int32 {
 	return MakeTag(int32(self.Type), self.Order)
 }
 
-func (self *FieldDescriptor) SerializeData() (int32, string) {
-	return self.Order, self.Name
-}
-
 func MakeTag(t int32, order int32) int32 {
 	return t<<16 | order
 }

@@ -17,11 +17,11 @@ type valueRepeatData struct {
 
 // 1个电子表格文件
 type File struct {
-	LocalFD  *model.FileDescriptor // 本文件的类型描述表
-	GlobalFD *model.FileDescriptor // 全局的类型描述表
-	FileName string
+	LocalFD     *model.FileDescriptor // 本文件的类型描述表
+	GlobalFD    *model.FileDescriptor // 全局的类型描述表
+	FileName    string
 	RawFileName string
-	coreFile *xlsx.File
+	coreFile    *xlsx.File
 
 	dataSheets  []*DataSheet
 	Header      *DataHeader
@@ -37,12 +37,14 @@ func (self *File) GlobalFileDesc() *model.FileDescriptor {
 
 }
 
-func (self *File) ExportLocalType(mainFile *File) bool {
+// 处理表(标签页)的类型信息
+func (self *File) ExportLocalType(mainFile *File, tableData *model.SerializeTableData) bool {
 
 	var sheetCount int
 
 	var typeSheet *TypeSheet
 	// 解析类型表
+	// 这一步只有处理globals表的时候需要, 其他时候可以考虑去掉...... 想一想怎么去合理
 	for _, rawSheet := range self.coreFile.Sheets {
 
 		if isTypeSheet(rawSheet.Name) {
@@ -71,10 +73,11 @@ func (self *File) ExportLocalType(mainFile *File) bool {
 
 	dataSheetName := ""
 	// 解析表头
+	// globals 这里不会处理
 	for _, rawSheet := range self.coreFile.Sheets {
 
-		// 是数据表
-		if !isTypeSheet(rawSheet.Name) && rawSheet.Name == self.FileName{
+		// 因为加入了分标签页的机制, 这里需要判断是不是我们想要处理的表。即判断标签页名和记录的fileName是否一致
+		if !isTypeSheet(rawSheet.Name) && rawSheet.Name == self.FileName {
 			dSheet := newDataSheet(NewSheet(self, rawSheet))
 
 			if !dSheet.Valid() {
@@ -82,7 +85,7 @@ func (self *File) ExportLocalType(mainFile *File) bool {
 			}
 
 			dataSheetName = rawSheet.Name
-			if typeSheet == nil{
+			if typeSheet == nil {
 				self.LocalFD.Pragma.KVPair.SetString("TableName", dataSheetName)
 				self.LocalFD.Pragma.KVPair.SetString("Package", "table")
 				self.LocalFD.Pragma.KVPair.SetString("CSClassHeader", "[System.Serializable]")
@@ -92,7 +95,8 @@ func (self *File) ExportLocalType(mainFile *File) bool {
 			dataHeader := newDataHeadSheet()
 
 			// 检查引导头
-			if !dataHeader.ParseProtoField(len(self.dataSheets), dSheet.Sheet, self.LocalFD, self.GlobalFD) {
+			// 初始化表中的数据结构
+			if !dataHeader.ParseProtoField(len(self.dataSheets), dSheet.Sheet, self.LocalFD, self.GlobalFD, tableData) {
 				return false
 			}
 
@@ -111,12 +115,14 @@ func (self *File) ExportLocalType(mainFile *File) bool {
 
 			self.dataHeaders = append(self.dataHeaders, dataHeader)
 			self.dataSheets = append(self.dataSheets, dSheet)
-
+			// 只处理我们要得标签页, 其他的不用管了
+			break
 		}
 	}
 
 	// File描述符的名字必须放在类型里, 因为这里始终会被调用, 但是如果数据表缺失, 是不会更新Name的
 	self.LocalFD.Name = self.LocalFD.Pragma.GetString("TableName")
+	self.LocalFD.SerializeData = tableData
 
 	return true
 }

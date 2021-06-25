@@ -31,10 +31,6 @@ type Table struct {
 	LocalFD  *FileDescriptor
 	GlobalFD *FileDescriptor
 	Recs     []*Record
-
-	////////////////////////////////////////
-	Index int32 // 序号(记录的序号值, 不再使用列表中的顺序)
-	////////////////////////////////////////
 }
 
 func (self *Table) Add(r *Record) {

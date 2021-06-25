@@ -30,6 +30,10 @@ type Descriptor struct {
 	Indexes     []*FieldDescriptor
 	IndexByName map[string]*FieldDescriptor
 
+	////////////////////////////////////////
+	SerializeData *SerializeTableData
+	////////////////////////////////////////
+
 	File *FileDescriptor
 }
 

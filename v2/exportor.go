@@ -3,8 +3,8 @@ package v2
 import (
 	"container/list"
 	"path/filepath"
-	"strings"
 	"sort"
+	"strings"
 
 	"github.com/davyxu/tabtoy/v2/i18n"
 	"github.com/davyxu/tabtoy/v2/model"
@@ -20,37 +20,47 @@ func Run(g *printer.Globals) bool {
 	cachedFile := cacheFile(g)
 	fileNames := list.New()
 	keys := make([]string, 0, len(cachedFile))
-	for k, _ := range cachedFile{
+	for k, _ := range cachedFile {
 		keys = append(keys, k)
 	}
 
 	sort.Strings(keys)
 	log.Infof("==========%s==========", "Begin cached files.")
-	for _, k := range keys{
+	for _, k := range keys {
 		log.Infof(k)
 	}
 	log.Infof("==========%s==========", "End cached files.")
 
 	// 把标签页搞成文件
 	splitedFiles := map[string]*File{}
-	for _, k := range keys{
+	for _, k := range keys {
 		f := cachedFile[k]
-		if strings.ToLower(f.FileName) == "globals.xlsx"{
+		if strings.ToLower(f.FileName) == "globals.xlsx" {
 			splitedFiles[strings.ToLower(f.FileName)] = f
 			f.RawFileName = f.FileName
-		} else{
+		} else {
 			sheets := f.coreFile.Sheets
-			for _, sheet := range sheets{
+			for _, sheet := range sheets {
 				// 忽略'.'开头的标签页
-				if strings.HasPrefix(sheet.Name, "."){
+				if strings.HasPrefix(sheet.Name, ".") {
 					continue
 				}
 
 				nf := &File{
-					valueRepByKey: 	make(map[valueRepeatData]bool),
-					LocalFD: 		model.NewFileDescriptor(),
-					FileName: 		sheet.Name,
+					valueRepByKey: make(map[valueRepeatData]bool),
+					LocalFD:       model.NewFileDescriptor(),
+					FileName:      sheet.Name,
 				}
+				// 根据缓存记录, 给定 Index 值; 如果记录中没有, 就赋新值
+				d, ok := g.Data.Tables[nf.FileName]
+				if ok {
+					nf.LocalFD.SerializeData = d
+				} else {
+					g.Data.MaxIndex += 1
+					nf.LocalFD.SerializeData = model.NewSerializeTableData(g.Data.MaxIndex)
+					g.Data.Tables[nf.FileName] = nf.LocalFD.SerializeData
+				}
+
 				nf.coreFile = f.coreFile
 				nf.RawFileName = f.FileName
 				splitedFiles[nf.FileName] = nf
@@ -66,10 +76,10 @@ func Run(g *printer.Globals) bool {
 
 	log.Infof("==========%s==========", i18n.String(i18n.Run_CollectTypeInfo))
 
-	for fn := fileNames.Front(); fn != nil; fn = fn.Next(){
+	for fn := fileNames.Front(); fn != nil; fn = fn.Next() {
 		log.Infof("file name = %s", fn.Value)
 		file := cachedFile[fn.Value.(string)]
-		if file == nil{
+		if file == nil {
 			return false
 		}
 
@@ -77,15 +87,15 @@ func Run(g *printer.Globals) bool {
 		log.Infof("file descriptor = %s", file.GlobalFD)
 
 		// 电子表格数据导出到Table对象
-		if !file.ExportLocalType(nil){
+		if !file.ExportLocalType(nil, file.LocalFD.SerializeData) {
 			return false
 		}
 		// 整合类型信息和数据
-		if !g.AddTypes(file.LocalFD){
+		if !g.AddTypes(file.LocalFD) {
 			return false
 		}
-		// 只写入主文件的文件列表
-		if file.Header != nil{
+		// 只写入主文件的文件列表(globals 文件不会被加入这个列表中)
+		if file.Header != nil {
 			fileObjList = append(fileObjList, file)
 		}
 	}

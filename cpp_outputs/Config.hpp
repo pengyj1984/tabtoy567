@@ -5,6 +5,9 @@
 #include <map>
 #include <string>
 
+#include "DataReader.h"
+#include "Logger.h"
+
 namespace table
 {
 	

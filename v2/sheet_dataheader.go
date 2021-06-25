@@ -36,7 +36,7 @@ type DataHeader struct {
 }
 
 // 检查字段行的长度
-func (self *DataHeader) ParseProtoField(index int, sheet *Sheet, localFD *model.FileDescriptor, globalFD *model.FileDescriptor) bool {
+func (self *DataHeader) ParseProtoField(index int, sheet *Sheet, localFD *model.FileDescriptor, globalFD *model.FileDescriptor, tableData *model.SerializeTableData) bool {
 
 	verticalHeader := localFD.Pragma.GetBool("Vertical")
 
@@ -56,7 +56,17 @@ func (self *DataHeader) ParseProtoField(index int, sheet *Sheet, localFD *model.
 				break
 			}
 
-			if errorPos := self.addHeaderElement(he, localFD, globalFD); errorPos != -1 {
+			d, ok := tableData.FieldOrders[he.FieldName]
+			order := int32(0)
+			if ok {
+				order = d
+			} else {
+				tableData.MaxOrder += 1
+				order = tableData.MaxOrder
+				tableData.FieldOrders[he.FieldName] = order
+			}
+
+			if errorPos := self.addHeaderElement(he, localFD, globalFD, order); errorPos != -1 {
 				sheet.Column = errorPos
 				goto ErrorStop
 			}
@@ -80,7 +90,17 @@ func (self *DataHeader) ParseProtoField(index int, sheet *Sheet, localFD *model.
 				break
 			}
 
-			if errorPos := self.addHeaderElement(he, localFD, globalFD); errorPos != -1 {
+			d, ok := tableData.FieldOrders[he.FieldName]
+			order := int32(0)
+			if ok {
+				order = d
+			} else {
+				tableData.MaxOrder += 1
+				order = tableData.MaxOrder
+				tableData.FieldOrders[he.FieldName] = order
+			}
+
+			if errorPos := self.addHeaderElement(he, localFD, globalFD, order); errorPos != -1 {
 				sheet.Row = errorPos
 				goto ErrorStop
 			}
@@ -95,7 +115,7 @@ func (self *DataHeader) ParseProtoField(index int, sheet *Sheet, localFD *model.
 
 	if index == 0 {
 		// 添加第一个数据表的定义
-		if !self.makeRowDescriptor(localFD, self.headerFields) {
+		if !self.makeRowDescriptor(localFD, self.headerFields, tableData) {
 			goto ErrorStop
 		}
 	}
@@ -169,9 +189,10 @@ func (self *DataHeader) AsymmetricEqual(other *DataHeader) (string, bool) {
 	return "", true
 }
 
-func (self *DataHeader) addHeaderElement(he *DataHeaderElement, localFD *model.FileDescriptor, globalFD *model.FileDescriptor) int {
+func (self *DataHeader) addHeaderElement(he *DataHeaderElement, localFD *model.FileDescriptor, globalFD *model.FileDescriptor, order int32) int {
 	def := model.NewFieldDescriptor()
 	def.Name = he.FieldName
+	def.Order = order
 
 	var errorPos int = -1
 
@@ -205,6 +226,7 @@ func (self *DataHeader) addHeaderElement(he *DataHeaderElement, localFD *model.F
 
 			self.HeaderByName[def.Name] = def
 			self.headerFields = append(self.headerFields, def)
+
 		}
 	}
 
@@ -214,7 +236,7 @@ func (self *DataHeader) addHeaderElement(he *DataHeaderElement, localFD *model.F
 	return -1
 }
 
-func (self *DataHeader) makeRowDescriptor(fileD *model.FileDescriptor, rootField []*model.FieldDescriptor) bool {
+func (self *DataHeader) makeRowDescriptor(fileD *model.FileDescriptor, rootField []*model.FieldDescriptor, tableData *model.SerializeTableData) bool {
 
 	rowType := model.NewDescriptor()
 	rowType.Usage = model.DescriptorUsage_RowType

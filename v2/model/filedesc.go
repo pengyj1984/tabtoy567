@@ -5,6 +5,10 @@ type FileDescriptor struct {
 	DescriptorByName map[string]*Descriptor
 	Descriptors      []*Descriptor
 
+	////////////////////////////////////////
+	SerializeData *SerializeTableData
+	////////////////////////////////////////
+
 	Pragma *MetaInfo
 }
 

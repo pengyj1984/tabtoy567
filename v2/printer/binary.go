@@ -132,8 +132,8 @@ func writeTableBinary(tabStream *Stream, tab *model.Table, index int32) bool {
 
 		}
 
-		tabStream.WriteInt32(model.MakeTag(int32(model.FieldType_Table), index))
-		//tabStream.WriteInt32(model.MakeTag(int32(model.FieldType_Table), tab.Index))
+		//tabStream.WriteInt32(model.MakeTag(int32(model.FieldType_Table), index))
+		tabStream.WriteInt32(model.MakeTag(int32(model.FieldType_Table), tab.LocalFD.SerializeData.Index))
 		tabStream.WriteInt32(int32(rowStream.Len()))
 		tabStream.WriteRawBytes(rowStream.Buffer().Bytes())
 	}
