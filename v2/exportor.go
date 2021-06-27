@@ -25,11 +25,11 @@ func Run(g *printer.Globals) bool {
 	}
 
 	sort.Strings(keys)
-	log.Infof("==========%s==========", "Begin cached files.")
-	for _, k := range keys {
-		log.Infof(k)
-	}
-	log.Infof("==========%s==========", "End cached files.")
+	//log.Infof("==========%s==========", "Begin cached files.")
+	//for _, k := range keys {
+	//	log.Infof(k)
+	//}
+	//log.Infof("==========%s==========", "End cached files.")
 
 	// 把标签页搞成文件
 	splitedFiles := map[string]*File{}
