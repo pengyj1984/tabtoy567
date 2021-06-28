@@ -115,7 +115,7 @@ func (self *Globals) AddTypes(localFD *model.FileDescriptor) bool {
 
 	// 将行定义结构也添加到文件中
 	// 处理 globals 的时候这里会处理 @Types 中的那些类型, 其他表这里不会处理什么
-	// 这些对象本身不存在编码, 但是类型中的值可能需要记录编码... 暂时不处理
+	// 这些对象本身不存在编码, 但是类型中的值可能需要记录编码
 	for _, d := range localFD.Descriptors {
 		if !self.FileDescriptor.Add(d) {
 			log.Errorf("%s, %s", i18n.String(i18n.Globals_DuplicateTypeName), d.Name)
@@ -149,7 +149,7 @@ func (self *Globals) AddContent(tab *model.Table) bool {
 	rowFD.Type = model.FieldType_Struct
 	rowFD.Complex = localFD.RowDescriptor()
 	rowFD.IsRepeated = true
-	rowFD.Order = int32(len(self.CombineStruct.Fields) + 1)
+	rowFD.Order = localFD.SerializeData.Index //int32(len(self.CombineStruct.Fields) + 1) 2021.06.28
 
 	// 去掉注释中的回车,避免代码生成错误
 	rowFD.Comment = strings.Replace(localFD.Name, "\n", " ", -1)

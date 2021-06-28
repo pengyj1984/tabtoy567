@@ -242,6 +242,7 @@ func (self *DataHeader) makeRowDescriptor(fileD *model.FileDescriptor, rootField
 	rowType.Usage = model.DescriptorUsage_RowType
 	rowType.Name = fmt.Sprintf("%sDefine", fileD.Pragma.GetString("TableName"))
 	rowType.Kind = model.DescriptorKind_Struct
+	rowType.SerializeTableData = tableData
 
 	// 类型已经存在, 说明是自己定义的 XXDefine, 不允许
 	if _, ok := fileD.DescriptorByName[rowType.Name]; ok {
@@ -253,7 +254,8 @@ func (self *DataHeader) makeRowDescriptor(fileD *model.FileDescriptor, rootField
 
 	// 将表格中的列添加到类型中, 方便导出
 	for _, field := range rootField {
-
+		order := tableData.GetFieldOrder(field.Name)
+		field.Order = order
 		rowType.Add(field)
 	}
 

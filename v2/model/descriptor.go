@@ -1,6 +1,8 @@
 package model
 
-import "errors"
+import (
+	"errors"
+)
 
 type DescriptorKind int
 
@@ -31,7 +33,7 @@ type Descriptor struct {
 	IndexByName map[string]*FieldDescriptor
 
 	////////////////////////////////////////
-	SerializeData *SerializeTableData
+	SerializeTableData *SerializeTableData
 	////////////////////////////////////////
 
 	File *FileDescriptor
@@ -45,7 +47,7 @@ var (
 func (self *Descriptor) Add(def *FieldDescriptor) error {
 
 	def.Parent = self
-	def.Order = int32(len(self.Fields))
+	//def.Order = int32(len(self.Fields))
 
 	// 创建字段
 	if _, ok := self.FieldByName[def.Name]; ok {

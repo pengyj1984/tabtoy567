@@ -196,6 +196,49 @@ local tab = {
 		{ sort = 76, text = "50级牛头人萨满.水*1", parameter = { { heroid= 130110007, herocolor= 4, herolevel= 50, heronum= 1 } } 	}
 	}, 
 
+	TestCommand = {
+		{ sort = 1, text = "跳转到关卡1-1", levelId = 170210001 	},
+		{ sort = 2, text = "跳转到关卡1-6", levelId = 170210006 	},
+		{ sort = 3, text = "跳转到关卡1-10", levelId = 170210010 	},
+		{ sort = 4, text = "跳转到关卡2-1", levelId = 170210011 	},
+		{ sort = 5, text = "跳转到关卡2-6", levelId = 170210016 	},
+		{ sort = 6, text = "跳转到关卡2-11", levelId = 170210021 	},
+		{ sort = 7, text = "跳转到关卡2-16", levelId = 170210026 	},
+		{ sort = 8, text = "跳转到关卡2-20", levelId = 170210030 	},
+		{ sort = 9, text = "跳转到关卡3-1", levelId = 170210031 	},
+		{ sort = 10, text = "跳转到关卡3-6", levelId = 170210036 	},
+		{ sort = 11, text = "跳转到关卡3-11", levelId = 170210041 	},
+		{ sort = 12, text = "跳转到关卡3-16", levelId = 170210046 	},
+		{ sort = 13, text = "跳转到关卡4-1", levelId = 170210051 	},
+		{ sort = 14, text = "跳转到关卡4-6", levelId = 170210056 	},
+		{ sort = 15, text = "跳转到关卡4-11", levelId = 170210061 	},
+		{ sort = 16, text = "跳转到关卡4-16", levelId = 170210066 	},
+		{ sort = 17, text = "跳转到关卡5-1", levelId = 170210071 	},
+		{ sort = 18, text = "跳转到关卡5-6", levelId = 170210076 	},
+		{ sort = 19, text = "跳转到关卡5-11", levelId = 170210081 	},
+		{ sort = 20, text = "跳转到关卡5-16", levelId = 170210086 	},
+		{ sort = 21, text = "跳转到关卡6-1", levelId = 170210091 	},
+		{ sort = 22, text = "跳转到关卡6-6", levelId = 170210096 	},
+		{ sort = 23, text = "跳转到关卡6-11", levelId = 170210101 	},
+		{ sort = 24, text = "跳转到关卡6-16", levelId = 170210106 	},
+		{ sort = 25, text = "跳转到关卡7-1", levelId = 170210111 	},
+		{ sort = 26, text = "跳转到关卡7-6", levelId = 170210116 	},
+		{ sort = 27, text = "跳转到关卡7-11", levelId = 170210121 	},
+		{ sort = 28, text = "跳转到关卡7-16", levelId = 170210126 	},
+		{ sort = 29, text = "跳转到关卡8-1", levelId = 170210131 	},
+		{ sort = 30, text = "跳转到关卡8-6", levelId = 170210136 	},
+		{ sort = 31, text = "跳转到关卡8-11", levelId = 170210141 	},
+		{ sort = 32, text = "跳转到关卡8-16", levelId = 170210146 	},
+		{ sort = 33, text = "跳转到关卡9-1", levelId = 170210151 	},
+		{ sort = 34, text = "跳转到关卡9-6", levelId = 170210156 	},
+		{ sort = 35, text = "跳转到关卡9-11", levelId = 170210161 	},
+		{ sort = 36, text = "跳转到关卡9-16", levelId = 170210166 	},
+		{ sort = 37, text = "跳转到关卡9-17", levelId = 170210167 	},
+		{ sort = 38, text = "跳转到关卡9-18", levelId = 170210168 	},
+		{ sort = 39, text = "跳转到关卡9-19", levelId = 170210169 	},
+		{ sort = 40, text = "跳转到关卡9-20", levelId = 170210170 	}
+	}, 
+
 	SealwareCommand = {
 		{ sort = 1, text = "克拉肯之斧", sealwareId = 200110001 	},
 		{ sort = 2, text = "阿涅彌伊之怒", sealwareId = 200110002 	},
@@ -323,6 +366,12 @@ end
 tab.HeroCommandBysort = {}
 for _, rec in pairs(tab.HeroCommand) do
 	tab.HeroCommandBysort[rec.sort] = rec
+end
+
+-- sort
+tab.TestCommandBysort = {}
+for _, rec in pairs(tab.TestCommand) do
+	tab.TestCommandBysort[rec.sort] = rec
 end
 
 -- sort

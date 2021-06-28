@@ -87,7 +87,9 @@ func Run(g *printer.Globals) bool {
 		log.Infof("file descriptor = %s", file.GlobalFD)
 
 		// 电子表格数据导出到Table对象
-		if !file.ExportLocalType(nil, file.LocalFD.SerializeData) {
+		if strings.ToLower(file.FileName) == "globals.xlsx" && !file.ExportGlobalType(g) {
+			return false
+		} else if !file.ExportLocalType(nil, file.LocalFD.SerializeData) {
 			return false
 		}
 		// 整合类型信息和数据
@@ -190,6 +192,7 @@ func Run(g *printer.Globals) bool {
 		}
 
 		// 整合类型信息和数据
+		// 将这个文件的定义添加到 global 的 fields 中
 		if !g.AddContent(tab) {
 			return false
 		}

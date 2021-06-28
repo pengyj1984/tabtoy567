@@ -32,6 +32,11 @@ namespace table
 		public List<HeroCommandDefine> HeroCommand = new List<HeroCommandDefine>(); 
 		
 		/// <summary> 
+		/// TestCommand
+		/// </summary>
+		public List<TestCommandDefine> TestCommand = new List<TestCommandDefine>(); 
+		
+		/// <summary> 
 		/// SealwareCommand
 		/// </summary>
 		public List<SealwareCommandDefine> SealwareCommand = new List<SealwareCommandDefine>(); 
@@ -91,6 +96,22 @@ namespace table
 
             return def;
         }
+		Dictionary<int, TestCommandDefine> _TestCommandBysort = new Dictionary<int, TestCommandDefine>();
+        public TestCommandDefine GetTestCommandBysort(int sort, TestCommandDefine def = default(TestCommandDefine))
+        {
+            TestCommandDefine ret;
+            if ( _TestCommandBysort.TryGetValue( sort, out ret ) )
+            {
+                return ret;
+            }
+			
+			if ( def == default(TestCommandDefine) )
+			{
+				TableLogger.ErrorLine("GetTestCommandBysort failed, sort: {0}", sort);
+			}
+
+            return def;
+        }
 		Dictionary<int, SealwareCommandDefine> _SealwareCommandBysort = new Dictionary<int, SealwareCommandDefine>();
         public SealwareCommandDefine GetSealwareCommandBysort(int sort, SealwareCommandDefine def = default(SealwareCommandDefine))
         {
@@ -125,7 +146,7 @@ namespace table
         }
 		
 		public string GetBuildID(){
-			return "0ebd71a1d3f089707522a6eb4bb8ed5e";
+			return "ff416098c599d72376f2719cf0d69f2f";
 		}
 	
 		#endregion
@@ -152,27 +173,32 @@ namespace table
             {
                 switch (tag)
                 { 
-                	case 0xa0000:
+                	case 0xa0001:
                 	{
 						ins.FightCommand.Add( reader.ReadStruct<FightCommandDefine>(FightCommandDefineDeserializeHandler) );
                 	}
                 	break; 
-                	case 0xa0001:
+                	case 0xa0002:
                 	{
 						ins.GoodsCommand.Add( reader.ReadStruct<GoodsCommandDefine>(GoodsCommandDefineDeserializeHandler) );
                 	}
                 	break; 
-                	case 0xa0002:
+                	case 0xa0003:
                 	{
 						ins.HeroCommand.Add( reader.ReadStruct<HeroCommandDefine>(HeroCommandDefineDeserializeHandler) );
                 	}
                 	break; 
-                	case 0xa0003:
+                	case 0xa0024:
+                	{
+						ins.TestCommand.Add( reader.ReadStruct<TestCommandDefine>(TestCommandDefineDeserializeHandler) );
+                	}
+                	break; 
+                	case 0xa0004:
                 	{
 						ins.SealwareCommand.Add( reader.ReadStruct<SealwareCommandDefine>(SealwareCommandDefineDeserializeHandler) );
                 	}
                 	break; 
-                	case 0xa0004:
+                	case 0xa0005:
                 	{
 						ins.LevelCommand.Add( reader.ReadStruct<LevelCommandDefine>(LevelCommandDefineDeserializeHandler) );
                 	}
@@ -205,6 +231,15 @@ namespace table
 				var element = ins.HeroCommand[i];
 				
 				ins._HeroCommandBysort.Add(element.sort, element);
+				
+			}
+			
+			// Build TestCommand Index
+			for( int i = 0;i< ins.TestCommand.Count;i++)
+			{
+				var element = ins.TestCommand[i];
+				
+				ins._TestCommandBysort.Add(element.sort, element);
 				
 			}
 			
@@ -248,27 +283,32 @@ namespace table
             {
                 switch (tag)
                 { 
-                	case 0x10000:
+                	case 0x10001:
                 	{
 						ins.id = reader.ReadInt32();
                 	}
                 	break; 
-                	case 0x10001:
+                	case 0x10002:
                 	{
 						ins.count = reader.ReadInt32();
                 	}
                 	break; 
-                	case 0x10002:
+                	case 0x10003:
                 	{
 						ins.index = reader.ReadInt32();
                 	}
                 	break; 
-                	case 0x50003:
+                	case 0x10006:
+                	{
+						ins.test = reader.ReadInt32();
+                	}
+                	break; 
+                	case 0x50004:
                 	{
 						ins.time = reader.ReadFloat();
                 	}
                 	break; 
-                	case 0x50004:
+                	case 0x50005:
                 	{
 						ins.delay = reader.ReadFloat();
                 	}
@@ -299,17 +339,17 @@ namespace table
             {
                 switch (tag)
                 { 
-                	case 0x50000:
+                	case 0x50001:
                 	{
 						ins.x = reader.ReadFloat();
                 	}
                 	break; 
-                	case 0x50001:
+                	case 0x50002:
                 	{
 						ins.y = reader.ReadFloat();
                 	}
                 	break; 
-                	case 0x50002:
+                	case 0x50003:
                 	{
 						ins.z = reader.ReadFloat();
                 	}
@@ -340,22 +380,22 @@ namespace table
             {
                 switch (tag)
                 { 
-                	case 0x50000:
+                	case 0x50001:
                 	{
 						ins.x = reader.ReadFloat();
                 	}
                 	break; 
-                	case 0x50001:
+                	case 0x50002:
                 	{
 						ins.y = reader.ReadFloat();
                 	}
                 	break; 
-                	case 0x50002:
+                	case 0x50003:
                 	{
 						ins.z = reader.ReadFloat();
                 	}
                 	break; 
-                	case 0x50003:
+                	case 0x50004:
                 	{
 						ins.v = reader.ReadFloat();
                 	}
@@ -386,17 +426,17 @@ namespace table
             {
                 switch (tag)
                 { 
-                	case 0x10000:
+                	case 0x10001:
                 	{
 						ins.attrid = reader.ReadInt32();
                 	}
                 	break; 
-                	case 0x10001:
+                	case 0x10002:
                 	{
 						ins.attrnum = reader.ReadInt32();
                 	}
                 	break; 
-                	case 0x10002:
+                	case 0x10003:
                 	{
 						ins.attrper = reader.ReadInt32();
                 	}
@@ -427,12 +467,12 @@ namespace table
             {
                 switch (tag)
                 { 
-                	case 0x60000:
+                	case 0x60001:
                 	{
 						ins.attr = reader.ReadString();
                 	}
                 	break; 
-                	case 0x10001:
+                	case 0x10002:
                 	{
 						ins.per = reader.ReadInt32();
                 	}
@@ -463,22 +503,22 @@ namespace table
             {
                 switch (tag)
                 { 
-                	case 0x10000:
+                	case 0x10001:
                 	{
 						ins.mainpart = reader.ReadInt32();
                 	}
                 	break; 
-                	case 0x10001:
+                	case 0x10002:
                 	{
 						ins.conditionpattern = reader.ReadInt32();
                 	}
                 	break; 
-                	case 0x10002:
+                	case 0x10003:
                 	{
 						ins.judge = reader.ReadInt32();
                 	}
                 	break; 
-                	case 0x10003:
+                	case 0x10004:
                 	{
 						ins.parameter = reader.ReadInt32();
                 	}
@@ -509,32 +549,32 @@ namespace table
             {
                 switch (tag)
                 { 
-                	case 0x10000:
+                	case 0x10001:
                 	{
 						ins.mainpart = reader.ReadInt32();
                 	}
                 	break; 
-                	case 0x10001:
+                	case 0x10002:
                 	{
 						ins.eventpattern = reader.ReadInt32();
                 	}
                 	break; 
-                	case 0x10002:
+                	case 0x10003:
                 	{
 						ins.parameter = reader.ReadInt32();
                 	}
                 	break; 
-                	case 0x60003:
+                	case 0x60004:
                 	{
 						ins.talk = reader.ReadString();
                 	}
                 	break; 
-                	case 0x10004:
+                	case 0x10005:
                 	{
 						ins.target = reader.ReadInt32();
                 	}
                 	break; 
-                	case 0x10005:
+                	case 0x10006:
                 	{
 						ins.targetparameter = reader.ReadInt32();
                 	}
@@ -565,12 +605,12 @@ namespace table
             {
                 switch (tag)
                 { 
-                	case 0x10000:
+                	case 0x10001:
                 	{
 						ins.propertyid = reader.ReadInt32();
                 	}
                 	break; 
-                	case 0x10001:
+                	case 0x10002:
                 	{
 						ins.num = reader.ReadInt32();
                 	}
@@ -601,12 +641,12 @@ namespace table
             {
                 switch (tag)
                 { 
-                	case 0x10000:
+                	case 0x10001:
                 	{
 						ins.goodsid = reader.ReadInt32();
                 	}
                 	break; 
-                	case 0x10001:
+                	case 0x10002:
                 	{
 						ins.num = reader.ReadInt32();
                 	}
@@ -637,12 +677,12 @@ namespace table
             {
                 switch (tag)
                 { 
-                	case 0x50000:
+                	case 0x50001:
                 	{
 						ins.x = reader.ReadFloat();
                 	}
                 	break; 
-                	case 0x50001:
+                	case 0x50002:
                 	{
 						ins.y = reader.ReadFloat();
                 	}
@@ -673,22 +713,22 @@ namespace table
             {
                 switch (tag)
                 { 
-                	case 0x10000:
+                	case 0x10001:
                 	{
 						ins.condition = reader.ReadInt32();
                 	}
                 	break; 
-                	case 0x10001:
+                	case 0x10002:
                 	{
 						ins.judge = reader.ReadInt32();
                 	}
                 	break; 
-                	case 0x10002:
+                	case 0x10003:
                 	{
 						ins.parameter = reader.ReadInt32();
                 	}
                 	break; 
-                	case 0x10003:
+                	case 0x10004:
                 	{
 						ins.rate = reader.ReadInt32();
                 	}
@@ -719,12 +759,12 @@ namespace table
             {
                 switch (tag)
                 { 
-                	case 0x10000:
+                	case 0x10001:
                 	{
 						ins.heronum = reader.ReadInt32();
                 	}
                 	break; 
-                	case 0x10001:
+                	case 0x10002:
                 	{
 						ins.skillid = reader.ReadInt32();
                 	}
@@ -755,22 +795,22 @@ namespace table
             {
                 switch (tag)
                 { 
-                	case 0x10000:
+                	case 0x10001:
                 	{
 						ins.itemid = reader.ReadInt32();
                 	}
                 	break; 
-                	case 0x10001:
+                	case 0x10002:
                 	{
 						ins.count = reader.ReadInt32();
                 	}
                 	break; 
-                	case 0x10002:
+                	case 0x10003:
                 	{
 						ins.weight = reader.ReadInt32();
                 	}
                 	break; 
-                	case 0x10003:
+                	case 0x10004:
                 	{
 						ins.minNum = reader.ReadInt32();
                 	}
@@ -801,12 +841,12 @@ namespace table
             {
                 switch (tag)
                 { 
-                	case 0x10000:
+                	case 0x10001:
                 	{
 						ins.parameter1 = reader.ReadInt32();
                 	}
                 	break; 
-                	case 0x60001:
+                	case 0x60002:
                 	{
 						ins.parameter2 = reader.ReadString();
                 	}
@@ -837,12 +877,12 @@ namespace table
             {
                 switch (tag)
                 { 
-                	case 0x10000:
+                	case 0x10001:
                 	{
 						ins.intlimit = reader.ReadInt32();
                 	}
                 	break; 
-                	case 0x60001:
+                	case 0x60002:
                 	{
 						ins.stringlimit = reader.ReadString();
                 	}
@@ -873,22 +913,22 @@ namespace table
             {
                 switch (tag)
                 { 
-                	case 0x10000:
+                	case 0x10001:
                 	{
 						ins.heroid = reader.ReadInt32();
                 	}
                 	break; 
-                	case 0x10001:
+                	case 0x10002:
                 	{
 						ins.herocolor = reader.ReadInt32();
                 	}
                 	break; 
-                	case 0x10002:
+                	case 0x10003:
                 	{
 						ins.herolevel = reader.ReadInt32();
                 	}
                 	break; 
-                	case 0x10003:
+                	case 0x10004:
                 	{
 						ins.heronum = reader.ReadInt32();
                 	}
@@ -919,27 +959,27 @@ namespace table
             {
                 switch (tag)
                 { 
-                	case 0x50000:
+                	case 0x50001:
                 	{
 						ins.x = reader.ReadFloat();
                 	}
                 	break; 
-                	case 0x50001:
+                	case 0x50002:
                 	{
 						ins.y = reader.ReadFloat();
                 	}
                 	break; 
-                	case 0x50002:
+                	case 0x50003:
                 	{
 						ins.z = reader.ReadFloat();
                 	}
                 	break; 
-                	case 0x50003:
+                	case 0x50004:
                 	{
 						ins.speed = reader.ReadFloat();
                 	}
                 	break; 
-                	case 0x50004:
+                	case 0x50005:
                 	{
 						ins.duration = reader.ReadFloat();
                 	}
@@ -970,12 +1010,12 @@ namespace table
             {
                 switch (tag)
                 { 
-                	case 0x10000:
+                	case 0x10001:
                 	{
 						ins.leveupnum = reader.ReadInt32();
                 	}
                 	break; 
-                	case 0x10001:
+                	case 0x10002:
                 	{
 						ins.weight = reader.ReadInt32();
                 	}
@@ -1006,17 +1046,17 @@ namespace table
             {
                 switch (tag)
                 { 
-                	case 0x60000:
+                	case 0x60001:
                 	{
 						ins.cond = reader.ReadString();
                 	}
                 	break; 
-                	case 0x10001:
+                	case 0x10002:
                 	{
 						ins.num = reader.ReadInt32();
                 	}
                 	break; 
-                	case 0x10002:
+                	case 0x10003:
                 	{
 						ins.id = reader.ReadInt32();
                 	}
@@ -1047,12 +1087,12 @@ namespace table
             {
                 switch (tag)
                 { 
-                	case 0x50000:
+                	case 0x50001:
                 	{
 						ins.x = reader.ReadFloat();
                 	}
                 	break; 
-                	case 0x50001:
+                	case 0x50002:
                 	{
 						ins.y = reader.ReadFloat();
                 	}
@@ -1083,17 +1123,17 @@ namespace table
             {
                 switch (tag)
                 { 
-                	case 0x60000:
+                	case 0x60001:
                 	{
 						ins.cond = reader.ReadString();
                 	}
                 	break; 
-                	case 0x10001:
+                	case 0x10002:
                 	{
 						ins.num = reader.ReadInt32();
                 	}
                 	break; 
-                	case 0x10002:
+                	case 0x10003:
                 	{
 						ins.id = reader.ReadInt32();
                 	}
@@ -1124,12 +1164,12 @@ namespace table
             {
                 switch (tag)
                 { 
-                	case 0x60000:
+                	case 0x60001:
                 	{
 						ins.groupid = reader.ReadString();
                 	}
                 	break; 
-                	case 0x10001:
+                	case 0x10002:
                 	{
 						ins.num = reader.ReadInt32();
                 	}
@@ -1160,32 +1200,32 @@ namespace table
             {
                 switch (tag)
                 { 
-                	case 0x60000:
+                	case 0x60001:
                 	{
 						ins.name = reader.ReadString();
                 	}
                 	break; 
-                	case 0x10001:
+                	case 0x10002:
                 	{
 						ins.pattern = reader.ReadInt32();
                 	}
                 	break; 
-                	case 0x10002:
+                	case 0x10003:
                 	{
 						ins.magicnum = reader.ReadInt32();
                 	}
                 	break; 
-                	case 0x10003:
+                	case 0x10004:
                 	{
 						ins.seriesnum = reader.ReadInt32();
                 	}
                 	break; 
-                	case 0x60004:
+                	case 0x60005:
                 	{
 						ins.seriesname = reader.ReadString();
                 	}
                 	break; 
-                	case 0x60005:
+                	case 0x60006:
                 	{
 						ins.parameter = reader.ReadString();
                 	}
@@ -1216,12 +1256,12 @@ namespace table
             {
                 switch (tag)
                 { 
-                	case 0x10000:
+                	case 0x10001:
                 	{
 						ins.id = reader.ReadInt32();
                 	}
                 	break; 
-                	case 0x10001:
+                	case 0x10002:
                 	{
 						ins.num = reader.ReadInt32();
                 	}
@@ -1252,22 +1292,22 @@ namespace table
             {
                 switch (tag)
                 { 
-                	case 0x10000:
+                	case 0x10001:
                 	{
 						ins.fx = reader.ReadInt32();
                 	}
                 	break; 
-                	case 0x10001:
+                	case 0x10002:
                 	{
 						ins.hero = reader.ReadInt32();
                 	}
                 	break; 
-                	case 0x10002:
+                	case 0x10003:
                 	{
 						ins.fx2 = reader.ReadInt32();
                 	}
                 	break; 
-                	case 0x10003:
+                	case 0x10004:
                 	{
 						ins.linenum = reader.ReadInt32();
                 	}
@@ -1298,17 +1338,17 @@ namespace table
             {
                 switch (tag)
                 { 
-                	case 0x60000:
+                	case 0x60001:
                 	{
 						ins.language = reader.ReadString();
                 	}
                 	break; 
-                	case 0x10001:
+                	case 0x10002:
                 	{
 						ins.pattern = reader.ReadInt32();
                 	}
                 	break; 
-                	case 0x50002:
+                	case 0x50003:
                 	{
 						ins.price = reader.ReadFloat();
                 	}
@@ -1339,12 +1379,12 @@ namespace table
             {
                 switch (tag)
                 { 
-                	case 0x10000:
+                	case 0x10001:
                 	{
 						ins.herocolor = reader.ReadInt32();
                 	}
                 	break; 
-                	case 0x10001:
+                	case 0x10002:
                 	{
 						ins.weight = reader.ReadInt32();
                 	}
@@ -1375,12 +1415,12 @@ namespace table
             {
                 switch (tag)
                 { 
-                	case 0x10000:
+                	case 0x10001:
                 	{
 						ins.id = reader.ReadInt32();
                 	}
                 	break; 
-                	case 0x10001:
+                	case 0x10002:
                 	{
 						ins.value = reader.ReadInt32();
                 	}
@@ -1411,12 +1451,12 @@ namespace table
             {
                 switch (tag)
                 { 
-                	case 0x10000:
+                	case 0x10001:
                 	{
 						ins.attrid = reader.ReadInt32();
                 	}
                 	break; 
-                	case 0x10001:
+                	case 0x10002:
                 	{
 						ins.weight = reader.ReadInt32();
                 	}
@@ -1447,12 +1487,12 @@ namespace table
             {
                 switch (tag)
                 { 
-                	case 0x10000:
+                	case 0x10001:
                 	{
 						ins.num = reader.ReadInt32();
                 	}
                 	break; 
-                	case 0x10001:
+                	case 0x10002:
                 	{
 						ins.weight = reader.ReadInt32();
                 	}
@@ -1483,17 +1523,17 @@ namespace table
             {
                 switch (tag)
                 { 
-                	case 0x10000:
+                	case 0x10001:
                 	{
 						ins.sort = reader.ReadInt32();
                 	}
                 	break; 
-                	case 0x60001:
+                	case 0x60002:
                 	{
 						ins.text = reader.ReadString();
                 	}
                 	break; 
-                	case 0x10002:
+                	case 0x10003:
                 	{
 						ins.speed = reader.ReadInt32();
                 	}
@@ -1524,17 +1564,17 @@ namespace table
             {
                 switch (tag)
                 { 
-                	case 0x10000:
+                	case 0x10001:
                 	{
 						ins.sort = reader.ReadInt32();
                 	}
                 	break; 
-                	case 0x60001:
+                	case 0x60002:
                 	{
 						ins.text = reader.ReadString();
                 	}
                 	break; 
-                	case 0x90002:
+                	case 0x90003:
                 	{
 						ins.parameter.Add( reader.ReadStruct<reward>(rewardDeserializeHandler) );
                 	}
@@ -1565,19 +1605,60 @@ namespace table
             {
                 switch (tag)
                 { 
-                	case 0x10000:
+                	case 0x10001:
                 	{
 						ins.sort = reader.ReadInt32();
                 	}
                 	break; 
-                	case 0x60001:
+                	case 0x60002:
                 	{
 						ins.text = reader.ReadString();
                 	}
                 	break; 
-                	case 0x90002:
+                	case 0x90003:
                 	{
 						ins.parameter.Add( reader.ReadStruct<herodata>(herodataDeserializeHandler) );
+                	}
+                	break; 
+                }
+             } 
+
+			
+		}
+		static tabtoy.DeserializeHandler<TestCommandDefine> _TestCommandDefineDeserializeHandler;
+		static tabtoy.DeserializeHandler<TestCommandDefine> TestCommandDefineDeserializeHandler
+		{
+			get
+			{
+				if (_TestCommandDefineDeserializeHandler == null )
+				{
+					_TestCommandDefineDeserializeHandler = new tabtoy.DeserializeHandler<TestCommandDefine>(Deserialize);
+				}
+
+				return _TestCommandDefineDeserializeHandler;
+			}
+		}
+		public static void Deserialize( TestCommandDefine ins, tabtoy.DataReader reader )
+		{
+			
+ 			int tag = -1;
+            while ( -1 != (tag = reader.ReadTag()))
+            {
+                switch (tag)
+                { 
+                	case 0x10001:
+                	{
+						ins.sort = reader.ReadInt32();
+                	}
+                	break; 
+                	case 0x60002:
+                	{
+						ins.text = reader.ReadString();
+                	}
+                	break; 
+                	case 0x10003:
+                	{
+						ins.levelId = reader.ReadInt32();
                 	}
                 	break; 
                 }
@@ -1606,17 +1687,17 @@ namespace table
             {
                 switch (tag)
                 { 
-                	case 0x10000:
+                	case 0x10001:
                 	{
 						ins.sort = reader.ReadInt32();
                 	}
                 	break; 
-                	case 0x60001:
+                	case 0x60002:
                 	{
 						ins.text = reader.ReadString();
                 	}
                 	break; 
-                	case 0x10002:
+                	case 0x10003:
                 	{
 						ins.sealwareId = reader.ReadInt32();
                 	}
@@ -1647,17 +1728,17 @@ namespace table
             {
                 switch (tag)
                 { 
-                	case 0x10000:
+                	case 0x10001:
                 	{
 						ins.sort = reader.ReadInt32();
                 	}
                 	break; 
-                	case 0x60001:
+                	case 0x60002:
                 	{
 						ins.text = reader.ReadString();
                 	}
                 	break; 
-                	case 0x10002:
+                	case 0x10003:
                 	{
 						ins.levelId = reader.ReadInt32();
                 	}
@@ -1674,12 +1755,14 @@ namespace table
 				FightCommand.Clear(); 		
 				GoodsCommand.Clear(); 		
 				HeroCommand.Clear(); 		
+				TestCommand.Clear(); 		
 				SealwareCommand.Clear(); 		
 				LevelCommand.Clear(); 
 			
 				_FightCommandBysort.Clear(); 
 				_GoodsCommandBysort.Clear(); 
 				_HeroCommandBysort.Clear(); 
+				_TestCommandBysort.Clear(); 
 				_SealwareCommandBysort.Clear(); 
 				_LevelCommandBysort.Clear(); 
 		}
@@ -1702,6 +1785,9 @@ namespace table
 		
 		
 		public int index = 0; // 路線Index
+		
+		
+		public int test = 0; // 测试用
 		
 		
 		public float time = 0f; // 間隔
@@ -2385,6 +2471,31 @@ namespace table
 		/// {1}依次为英雄ID、英雄品质、英雄等级、英雄数量； 注意： 1.英雄品质、等级只能配置比初始值高；如果其中一项未填写，则按对应ID的默认数据输入； 2.英雄涉及到带有唯一ID，原则配置获得数量不能超过99
 		/// </summary>
 		public List<herodata> parameter = new List<herodata>(); 
+	
+	
+
+	} 
+
+	// Defined in table: TestCommand
+	[System.Serializable]
+	public partial class TestCommandDefine
+	{
+	
+		
+		/// <summary> 
+		/// {1}命令序数
+		/// </summary>
+		public int sort = 0; 
+		
+		/// <summary> 
+		/// {1}命令描述文本；原则上不超过20个字
+		/// </summary>
+		public string text = ""; 
+		
+		/// <summary> 
+		/// {1}跳转的关卡ID
+		/// </summary>
+		public int levelId = 0; 
 	
 	
 

@@ -4,8 +4,8 @@
 package table
 
 import (
-	"fmt"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 )
 
@@ -20,6 +20,9 @@ type Config struct {
 
 	//HeroCommand
 	HeroCommand []*HeroCommandDefine
+
+	//TestCommand
+	TestCommand []*TestCommandDefine
 
 	//SealwareCommand
 	SealwareCommand []*SealwareCommandDefine
@@ -39,6 +42,9 @@ type WaveGroup struct {
 
 	// 路線Index
 	index int32
+
+	// 测试用
+	test int32
 
 	// 間隔
 	time float32
@@ -439,6 +445,19 @@ type HeroCommandDefine struct {
 	parameter []*herodata
 }
 
+// Defined in table: TestCommand
+type TestCommandDefine struct {
+
+	//{1}命令序数
+	sort int32
+
+	//{1}命令描述文本；原则上不超过20个字
+	text string
+
+	//{1}跳转的关卡ID
+	levelId int32
+}
+
 // Defined in table: SealwareCommand
 type SealwareCommandDefine struct {
 
@@ -488,6 +507,8 @@ type ConfigTable struct {
 	GoodsCommandBysort map[int32]*GoodsCommandDefine
 
 	HeroCommandBysort map[int32]*HeroCommandDefine
+
+	TestCommandBysort map[int32]*TestCommandDefine
 
 	SealwareCommandBysort map[int32]*SealwareCommandDefine
 
@@ -638,6 +659,22 @@ func NewConfigTable() *ConfigTable {
 				return nil
 			}},
 
+			"TestCommand": {func(tab *ConfigTable) error {
+
+				// TestCommand
+				for _, def := range tab.TestCommand {
+
+					if _, ok := tab.TestCommandBysort[def.sort]; ok {
+						panic(fmt.Sprintf("duplicate index in TestCommandBysort: %v", def.sort))
+					}
+
+					tab.TestCommandBysort[def.sort] = def
+
+				}
+
+				return nil
+			}},
+
 			"SealwareCommand": {func(tab *ConfigTable) error {
 
 				// SealwareCommand
@@ -700,6 +737,15 @@ func NewConfigTable() *ConfigTable {
 				return nil
 			}},
 
+			"TestCommand": {func(tab *ConfigTable) error {
+
+				// TestCommand
+
+				tab.TestCommandBysort = make(map[int32]*TestCommandDefine)
+
+				return nil
+			}},
+
 			"SealwareCommand": {func(tab *ConfigTable) error {
 
 				// SealwareCommand
@@ -724,6 +770,8 @@ func NewConfigTable() *ConfigTable {
 		GoodsCommandBysort: make(map[int32]*GoodsCommandDefine),
 
 		HeroCommandBysort: make(map[int32]*HeroCommandDefine),
+
+		TestCommandBysort: make(map[int32]*TestCommandDefine),
 
 		SealwareCommandBysort: make(map[int32]*SealwareCommandDefine),
 

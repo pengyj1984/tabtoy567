@@ -74,7 +74,7 @@ func (self *typeModelRoot) ParsePragma(localFD *model.FileDescriptor) bool {
 }
 
 // 解析类型表里的所有类型描述
-func (self *typeModelRoot) ParseData(localFD *model.FileDescriptor, globalFD *model.FileDescriptor) bool {
+func (self *typeModelRoot) ParseData(localFD *model.FileDescriptor, globalFD *model.FileDescriptor, data *model.SerializeData) bool {
 
 	var td *model.Descriptor
 
@@ -105,6 +105,9 @@ func (self *typeModelRoot) ParseData(localFD *model.FileDescriptor, globalFD *mo
 			td = model.NewDescriptor()
 			td.Name = rawTypeName
 			localFD.Add(td)
+
+			existTable := data.GetTableData(rawTypeName)
+			td.SerializeTableData = existTable
 		}
 
 		// 字段名
@@ -179,6 +182,9 @@ func (self *typeModelRoot) ParseData(localFD *model.FileDescriptor, globalFD *mo
 		if self.Col != -1 {
 			m.fd.Meta.SetString("Default", rawDefault)
 		}
+
+		existOrder := td.SerializeTableData.GetFieldOrder(m.fd.Name)
+		m.fd.Order = existOrder
 
 		if td.Add(m.fd) != nil {
 			log.Errorf("%s '%s'", i18n.String(i18n.TypeSheet_DuplicateFieldName), m.fd.Name)

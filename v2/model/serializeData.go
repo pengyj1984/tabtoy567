@@ -67,6 +67,17 @@ func (self *SerializeData) WriteSerializeData() error {
 	return nil
 }
 
+func (self *SerializeData) GetTableData(tableName string) *SerializeTableData {
+	table, ok := self.Tables[tableName]
+	if !ok {
+		self.MaxIndex += 1
+		table = NewSerializeTableData(self.MaxIndex)
+		self.Tables[tableName] = table
+	}
+
+	return table
+}
+
 func NewSerializeTableData(index int32) *SerializeTableData {
 	self := &SerializeTableData{
 		MaxOrder:    0,
@@ -75,4 +86,15 @@ func NewSerializeTableData(index int32) *SerializeTableData {
 	}
 
 	return self
+}
+
+func (self *SerializeTableData) GetFieldOrder(typeName string) int32 {
+	order, ok := self.FieldOrders[typeName]
+	if !ok {
+		order = self.MaxOrder + 1
+		self.MaxOrder = order
+		self.FieldOrders[typeName] = order
+	}
+
+	return order
 }

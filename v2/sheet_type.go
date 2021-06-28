@@ -131,7 +131,7 @@ func (self *TypeSheet) parseTable(root *typeModelRoot) bool {
 }
 
 // 解析所有的类型及数据
-func (self *TypeSheet) Parse(localFD *model.FileDescriptor, globalFD *model.FileDescriptor) bool {
+func (self *TypeSheet) Parse(localFD *model.FileDescriptor, globalFD *model.FileDescriptor, data *model.SerializeData) bool {
 
 	var root typeModelRoot
 
@@ -146,7 +146,7 @@ func (self *TypeSheet) Parse(localFD *model.FileDescriptor, globalFD *model.File
 		goto ErrorStop
 	}
 
-	if !root.ParseData(localFD, globalFD) {
+	if !root.ParseData(localFD, globalFD, data) {
 		self.Row = root.Row
 		self.Column = root.Col
 		goto ErrorStop
