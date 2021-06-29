@@ -32,6 +32,11 @@ namespace table
 		public List<HeroCommandDefine> HeroCommand = new List<HeroCommandDefine>(); 
 		
 		/// <summary> 
+		/// TestSheet
+		/// </summary>
+		public List<TestSheetDefine> TestSheet = new List<TestSheetDefine>(); 
+		
+		/// <summary> 
 		/// TestCommand
 		/// </summary>
 		public List<TestCommandDefine> TestCommand = new List<TestCommandDefine>(); 
@@ -96,6 +101,22 @@ namespace table
 
             return def;
         }
+		Dictionary<int, TestSheetDefine> _TestSheetBysort = new Dictionary<int, TestSheetDefine>();
+        public TestSheetDefine GetTestSheetBysort(int sort, TestSheetDefine def = default(TestSheetDefine))
+        {
+            TestSheetDefine ret;
+            if ( _TestSheetBysort.TryGetValue( sort, out ret ) )
+            {
+                return ret;
+            }
+			
+			if ( def == default(TestSheetDefine) )
+			{
+				TableLogger.ErrorLine("GetTestSheetBysort failed, sort: {0}", sort);
+			}
+
+            return def;
+        }
 		Dictionary<int, TestCommandDefine> _TestCommandBysort = new Dictionary<int, TestCommandDefine>();
         public TestCommandDefine GetTestCommandBysort(int sort, TestCommandDefine def = default(TestCommandDefine))
         {
@@ -146,7 +167,7 @@ namespace table
         }
 		
 		public string GetBuildID(){
-			return "ff416098c599d72376f2719cf0d69f2f";
+			return "2c5abd95de68bbaf6d8349f91e82ff03";
 		}
 	
 		#endregion
@@ -186,6 +207,11 @@ namespace table
                 	case 0xa0003:
                 	{
 						ins.HeroCommand.Add( reader.ReadStruct<HeroCommandDefine>(HeroCommandDefineDeserializeHandler) );
+                	}
+                	break; 
+                	case 0xa0025:
+                	{
+						ins.TestSheet.Add( reader.ReadStruct<TestSheetDefine>(TestSheetDefineDeserializeHandler) );
                 	}
                 	break; 
                 	case 0xa0024:
@@ -231,6 +257,15 @@ namespace table
 				var element = ins.HeroCommand[i];
 				
 				ins._HeroCommandBysort.Add(element.sort, element);
+				
+			}
+			
+			// Build TestSheet Index
+			for( int i = 0;i< ins.TestSheet.Count;i++)
+			{
+				var element = ins.TestSheet[i];
+				
+				ins._TestSheetBysort.Add(element.sort, element);
 				
 			}
 			
@@ -1625,6 +1660,47 @@ namespace table
 
 			
 		}
+		static tabtoy.DeserializeHandler<TestSheetDefine> _TestSheetDefineDeserializeHandler;
+		static tabtoy.DeserializeHandler<TestSheetDefine> TestSheetDefineDeserializeHandler
+		{
+			get
+			{
+				if (_TestSheetDefineDeserializeHandler == null )
+				{
+					_TestSheetDefineDeserializeHandler = new tabtoy.DeserializeHandler<TestSheetDefine>(Deserialize);
+				}
+
+				return _TestSheetDefineDeserializeHandler;
+			}
+		}
+		public static void Deserialize( TestSheetDefine ins, tabtoy.DataReader reader )
+		{
+			
+ 			int tag = -1;
+            while ( -1 != (tag = reader.ReadTag()))
+            {
+                switch (tag)
+                { 
+                	case 0x10001:
+                	{
+						ins.sort = reader.ReadInt32();
+                	}
+                	break; 
+                	case 0x60002:
+                	{
+						ins.text = reader.ReadString();
+                	}
+                	break; 
+                	case 0x10003:
+                	{
+						ins.sealwareId = reader.ReadInt32();
+                	}
+                	break; 
+                }
+             } 
+
+			
+		}
 		static tabtoy.DeserializeHandler<TestCommandDefine> _TestCommandDefineDeserializeHandler;
 		static tabtoy.DeserializeHandler<TestCommandDefine> TestCommandDefineDeserializeHandler
 		{
@@ -1755,6 +1831,7 @@ namespace table
 				FightCommand.Clear(); 		
 				GoodsCommand.Clear(); 		
 				HeroCommand.Clear(); 		
+				TestSheet.Clear(); 		
 				TestCommand.Clear(); 		
 				SealwareCommand.Clear(); 		
 				LevelCommand.Clear(); 
@@ -1762,6 +1839,7 @@ namespace table
 				_FightCommandBysort.Clear(); 
 				_GoodsCommandBysort.Clear(); 
 				_HeroCommandBysort.Clear(); 
+				_TestSheetBysort.Clear(); 
 				_TestCommandBysort.Clear(); 
 				_SealwareCommandBysort.Clear(); 
 				_LevelCommandBysort.Clear(); 
@@ -2471,6 +2549,31 @@ namespace table
 		/// {1}依次为英雄ID、英雄品质、英雄等级、英雄数量； 注意： 1.英雄品质、等级只能配置比初始值高；如果其中一项未填写，则按对应ID的默认数据输入； 2.英雄涉及到带有唯一ID，原则配置获得数量不能超过99
 		/// </summary>
 		public List<herodata> parameter = new List<herodata>(); 
+	
+	
+
+	} 
+
+	// Defined in table: TestSheet
+	[System.Serializable]
+	public partial class TestSheetDefine
+	{
+	
+		
+		/// <summary> 
+		/// {1}命令序数
+		/// </summary>
+		public int sort = 0; 
+		
+		/// <summary> 
+		/// {1}命令描述文本；原则上不超过20个字
+		/// </summary>
+		public string text = ""; 
+		
+		/// <summary> 
+		/// {1}封印物ID
+		/// </summary>
+		public int sealwareId = 0; 
 	
 	
 

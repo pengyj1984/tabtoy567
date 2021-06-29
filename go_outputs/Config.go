@@ -21,6 +21,9 @@ type Config struct {
 	//HeroCommand
 	HeroCommand []*HeroCommandDefine
 
+	//TestSheet
+	TestSheet []*TestSheetDefine
+
 	//TestCommand
 	TestCommand []*TestCommandDefine
 
@@ -445,6 +448,19 @@ type HeroCommandDefine struct {
 	parameter []*herodata
 }
 
+// Defined in table: TestSheet
+type TestSheetDefine struct {
+
+	//{1}命令序数
+	sort int32
+
+	//{1}命令描述文本；原则上不超过20个字
+	text string
+
+	//{1}封印物ID
+	sealwareId int32
+}
+
 // Defined in table: TestCommand
 type TestCommandDefine struct {
 
@@ -507,6 +523,8 @@ type ConfigTable struct {
 	GoodsCommandBysort map[int32]*GoodsCommandDefine
 
 	HeroCommandBysort map[int32]*HeroCommandDefine
+
+	TestSheetBysort map[int32]*TestSheetDefine
 
 	TestCommandBysort map[int32]*TestCommandDefine
 
@@ -659,6 +677,22 @@ func NewConfigTable() *ConfigTable {
 				return nil
 			}},
 
+			"TestSheet": {func(tab *ConfigTable) error {
+
+				// TestSheet
+				for _, def := range tab.TestSheet {
+
+					if _, ok := tab.TestSheetBysort[def.sort]; ok {
+						panic(fmt.Sprintf("duplicate index in TestSheetBysort: %v", def.sort))
+					}
+
+					tab.TestSheetBysort[def.sort] = def
+
+				}
+
+				return nil
+			}},
+
 			"TestCommand": {func(tab *ConfigTable) error {
 
 				// TestCommand
@@ -737,6 +771,15 @@ func NewConfigTable() *ConfigTable {
 				return nil
 			}},
 
+			"TestSheet": {func(tab *ConfigTable) error {
+
+				// TestSheet
+
+				tab.TestSheetBysort = make(map[int32]*TestSheetDefine)
+
+				return nil
+			}},
+
 			"TestCommand": {func(tab *ConfigTable) error {
 
 				// TestCommand
@@ -770,6 +813,8 @@ func NewConfigTable() *ConfigTable {
 		GoodsCommandBysort: make(map[int32]*GoodsCommandDefine),
 
 		HeroCommandBysort: make(map[int32]*HeroCommandDefine),
+
+		TestSheetBysort: make(map[int32]*TestSheetDefine),
 
 		TestCommandBysort: make(map[int32]*TestCommandDefine),
 

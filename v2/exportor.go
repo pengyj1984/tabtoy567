@@ -77,14 +77,14 @@ func Run(g *printer.Globals) bool {
 	log.Infof("==========%s==========", i18n.String(i18n.Run_CollectTypeInfo))
 
 	for fn := fileNames.Front(); fn != nil; fn = fn.Next() {
-		log.Infof("file name = %s", fn.Value)
+		//log.Infof("file name = %s", fn.Value)
 		file := cachedFile[fn.Value.(string)]
 		if file == nil {
 			return false
 		}
 
 		file.GlobalFD = g.FileDescriptor
-		log.Infof("file descriptor = %s", file.GlobalFD)
+		//log.Infof("file descriptor = %s", file.GlobalFD)
 
 		// 电子表格数据导出到Table对象
 		if strings.ToLower(file.FileName) == "globals.xlsx" && !file.ExportGlobalType(g) {

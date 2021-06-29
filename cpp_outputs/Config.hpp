@@ -858,6 +858,35 @@ namespace table
 
 	
 
+	// Defined in table: TestSheet
+	class TestSheetDefine
+	{
+	public:
+	
+		/// <summary> 
+		/// {1}命令序数
+		/// </summary>
+		public:
+ 		int sort_ = 0; 
+	
+		/// <summary> 
+		/// {1}命令描述文本；原则上不超过20个字
+		/// </summary>
+		public:
+ 		std::string text_ = ""; 
+	
+		/// <summary> 
+		/// {1}封印物ID
+		/// </summary>
+		public:
+ 		int sealwareId_ = 0; 
+	
+
+	}; 
+	
+
+	
+
 	// Defined in table: TestCommand
 	class TestCommandDefine
 	{
@@ -973,6 +1002,12 @@ namespace table
  		std::vector<HeroCommandDefine> HeroCommand_; 
 		
 		/// <summary> 
+		/// TestSheet
+		/// </summary>
+		public:
+ 		std::vector<TestSheetDefine> TestSheet_; 
+		
+		/// <summary> 
 		/// TestCommand
 		/// </summary>
 		public:
@@ -1039,6 +1074,23 @@ namespace table
 			if ( def == nullptr )
 			{
 				TableLogger.ErrorLine("GetHeroCommandBysort failed, sort: %s", sort);
+			}
+
+            return def;
+        }
+		std::map<int, TestSheetDefine> _TestSheetBysort;
+	public:
+		class TestSheetDefine* GetTestSheetBysort(int sort, TestSheetDefine* def = nullptr)
+        {
+            auto ret = _TestSheetBysort.find( sort );
+            if ( ret != _TestSheetBysort.end() )
+            {
+                return &ret->second;
+            }
+			
+			if ( def == nullptr )
+			{
+				TableLogger.ErrorLine("GetTestSheetBysort failed, sort: %s", sort);
 			}
 
             return def;
@@ -1122,6 +1174,11 @@ namespace table
 						ins.HeroCommand_.emplace_back( reader.ReadStruct<HeroCommandDefine>(Deserialize) );
                 	}
                 	break; 
+                	case 0xa0025:
+                	{
+						ins.TestSheet_.emplace_back( reader.ReadStruct<TestSheetDefine>(Deserialize) );
+                	}
+                	break; 
                 	case 0xa0024:
                 	{
 						ins.TestCommand_.emplace_back( reader.ReadStruct<TestCommandDefine>(Deserialize) );
@@ -1165,6 +1222,15 @@ namespace table
 				auto element = ins.HeroCommand_[i];
 				
 				ins._HeroCommandBysort.emplace(std::make_pair(element.sort_, element));
+				
+			}
+			
+			// Build TestSheet Index
+			for( size_t i = 0;i< ins.TestSheet_.size();i++)
+			{
+				auto element = ins.TestSheet_[i];
+				
+				ins._TestSheetBysort.emplace(std::make_pair(element.sort_, element));
 				
 			}
 			
@@ -2131,6 +2197,34 @@ namespace table
 			
 		}
 	public:
+		static void Deserialize( TestSheetDefine& ins, tabtoy::DataReader& reader )
+		{
+ 			int tag = -1;
+            while ( -1 != (tag = reader.ReadTag()))
+            {
+                switch (tag)
+                { 
+                	case 0x10001:
+                	{
+						ins.sort_ = reader.ReadInt32();
+                	}
+                	break; 
+                	case 0x60002:
+                	{
+						ins.text_ = reader.ReadString();
+                	}
+                	break; 
+                	case 0x10003:
+                	{
+						ins.sealwareId_ = reader.ReadInt32();
+                	}
+                	break; 
+                }
+             }
+
+			
+		}
+	public:
 		static void Deserialize( TestCommandDefine& ins, tabtoy::DataReader& reader )
 		{
  			int tag = -1;
@@ -2218,6 +2312,8 @@ namespace table
 	
 
 	};
+	
+	
 	
 	
 	
