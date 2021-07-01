@@ -85,6 +85,7 @@ func V2Entry() {
 
 	if v2.Run(g) {
 		g.Data.WriteSerializeData()
+		g.PrintBuildId()
 	} else {
 		os.Exit(1)
 	}

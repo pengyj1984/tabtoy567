@@ -3,6 +3,8 @@ package printer
 import (
 	"github.com/davyxu/tabtoy/v2/i18n"
 	"github.com/davyxu/tabtoy/v2/model"
+	"io/ioutil"
+	"os"
 	"strings"
 )
 
@@ -124,6 +126,19 @@ func (self *Globals) AddTypes(localFD *model.FileDescriptor) bool {
 	}
 
 	return true
+}
+
+func (self *Globals) PrintBuildId() error {
+	buildIdFileName := "buildId.txt"
+	_, err := os.Stat(buildIdFileName)
+	if !(os.IsNotExist(err)) {
+		os.Remove(buildIdFileName)
+	}
+	err = ioutil.WriteFile(buildIdFileName, []byte(self.BuildID), os.ModeAppend)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 // 合并每个表带的类型

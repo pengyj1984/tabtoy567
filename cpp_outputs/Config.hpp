@@ -973,6 +973,35 @@ namespace table
 	
 
 	
+
+	// Defined in table: TestCommand2
+	class TestCommand2Define
+	{
+	public:
+	
+		/// <summary> 
+		/// {1}命令序数
+		/// </summary>
+		public:
+ 		int sort_ = 0; 
+	
+		/// <summary> 
+		/// {1}命令描述文本；原则上不超过20个字
+		/// </summary>
+		public:
+ 		std::string text_ = ""; 
+	
+		/// <summary> 
+		/// {1}封印物ID
+		/// </summary>
+		public:
+ 		int sealwareId_ = 0; 
+	
+
+	}; 
+	
+
+	
 	
 
 	// Defined in table: Config	
@@ -1024,6 +1053,12 @@ namespace table
 		/// </summary>
 		public:
  		std::vector<LevelCommandDefine> LevelCommand_; 
+		
+		/// <summary> 
+		/// TestCommand2
+		/// </summary>
+		public:
+ 		std::vector<TestCommand2Define> TestCommand2_; 
 	
 	
 		//#region Index code
@@ -1146,6 +1181,23 @@ namespace table
 
             return def;
         }
+		std::map<int, TestCommand2Define> _TestCommand2Bysort;
+	public:
+		class TestCommand2Define* GetTestCommand2Bysort(int sort, TestCommand2Define* def = nullptr)
+        {
+            auto ret = _TestCommand2Bysort.find( sort );
+            if ( ret != _TestCommand2Bysort.end() )
+            {
+                return &ret->second;
+            }
+			
+			if ( def == nullptr )
+			{
+				TableLogger.ErrorLine("GetTestCommand2Bysort failed, sort: %s", sort);
+			}
+
+            return def;
+        }
 		
 	
 		//#endregion
@@ -1192,6 +1244,11 @@ namespace table
                 	case 0xa0005:
                 	{
 						ins.LevelCommand_.emplace_back( reader.ReadStruct<LevelCommandDefine>(Deserialize) );
+                	}
+                	break; 
+                	case 0xa0026:
+                	{
+						ins.TestCommand2_.emplace_back( reader.ReadStruct<TestCommand2Define>(Deserialize) );
                 	}
                 	break; 
                 }
@@ -1258,6 +1315,15 @@ namespace table
 				auto element = ins.LevelCommand_[i];
 				
 				ins._LevelCommandBysort.emplace(std::make_pair(element.sort_, element));
+				
+			}
+			
+			// Build TestCommand2 Index
+			for( size_t i = 0;i< ins.TestCommand2_.size();i++)
+			{
+				auto element = ins.TestCommand2_[i];
+				
+				ins._TestCommand2Bysort.emplace(std::make_pair(element.sort_, element));
 				
 			}
 			
@@ -2308,10 +2374,40 @@ namespace table
 
 			
 		}
+	public:
+		static void Deserialize( TestCommand2Define& ins, tabtoy::DataReader& reader )
+		{
+ 			int tag = -1;
+            while ( -1 != (tag = reader.ReadTag()))
+            {
+                switch (tag)
+                { 
+                	case 0x10001:
+                	{
+						ins.sort_ = reader.ReadInt32();
+                	}
+                	break; 
+                	case 0x60002:
+                	{
+						ins.text_ = reader.ReadString();
+                	}
+                	break; 
+                	case 0x10003:
+                	{
+						ins.sealwareId_ = reader.ReadInt32();
+                	}
+                	break; 
+                }
+             }
+
+			
+		}
 		//#endregion
 	
 
 	};
+	
+	
 	
 	
 	
