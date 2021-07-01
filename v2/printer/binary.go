@@ -1,8 +1,11 @@
 package printer
 
 import (
+	"crypto/md5"
+	"encoding/hex"
 	"github.com/davyxu/tabtoy/v2/i18n"
 	"github.com/davyxu/tabtoy/v2/model"
+	"strings"
 )
 
 const combineFileVersion = 4
@@ -13,14 +16,14 @@ type binaryPrinter struct {
 func (self *binaryPrinter) Run(g *Globals) *Stream {
 
 	fileStresam := NewStream()
-	//fileStresam.WriteString("TT")
-	//fileStresam.WriteInt32(combineFileVersion)
-	//fileStresam.WriteString(g.BuildID)
-	//const md5base64Len = 32
+	fileStresam.WriteString("TT")
+	fileStresam.WriteInt32(combineFileVersion)
+	fileStresam.WriteString(g.BuildID)
+	const md5base64Len = 32
 
-	//beginPos := fileStresam.Buffer().Len() + 4
-	//fileStresam.WriteString(strings.Repeat("Z", md5base64Len))
-	//dataPos := fileStresam.Buffer().Len()
+	beginPos := fileStresam.Buffer().Len() + 4
+	fileStresam.WriteString(strings.Repeat("Z", md5base64Len))
+	dataPos := fileStresam.Buffer().Len()
 
 	for index, tab := range g.Tables {
 
@@ -46,15 +49,15 @@ func (self *binaryPrinter) Run(g *Globals) *Stream {
 
 	}
 
-	//m := md5.New()
-	//m.Write([]byte(fileStresam.Buffer().Bytes()[dataPos:]))
+	m := md5.New()
+	m.Write([]byte(fileStresam.Buffer().Bytes()[dataPos:]))
 
-	//checksum := hex.EncodeToString(m.Sum(nil))
+	checksum := hex.EncodeToString(m.Sum(nil))
 
-	//checkSumData := fileStresam.Buffer().Bytes()[beginPos : beginPos+32]
+	checkSumData := fileStresam.Buffer().Bytes()[beginPos : beginPos+32]
 
 	// 回填checksum
-	//copy(checkSumData, []byte(checksum))
+	copy(checkSumData, []byte(checksum))
 
 	return fileStresam
 }
