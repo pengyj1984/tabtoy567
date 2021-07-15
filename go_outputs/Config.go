@@ -4,8 +4,8 @@
 package table
 
 import (
-	"encoding/json"
 	"fmt"
+	"encoding/json"
 	"io/ioutil"
 )
 
