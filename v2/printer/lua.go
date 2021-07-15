@@ -39,6 +39,18 @@ func (self *luaPrinter) Run(g *Globals) *Stream {
 		stream.Printf("\n%s\n", g.LuaTabHeader)
 	}
 
+	stream.Printf("\n")
+	// 添加lua注解
+	for _, v := range(g.Descriptors){
+		stream.Printf("---@class %s\n", v.Name)
+		for _, f := range(v.Fields){
+			stream.Printf("---@field %s %s\n", f.Name, GetLuaType(f))
+		}
+
+		stream.Printf("\n\n")
+	}
+
+	stream.Printf("---@type %s", g.Descriptors[0].Name)
 	stream.Printf("\nlocal tab = {\n")
 
 	for tabIndex, tab := range g.Tables {
@@ -75,6 +87,34 @@ func (self *luaPrinter) Run(g *Globals) *Stream {
 	stream.Printf("\nreturn tab")
 
 	return stream
+}
+
+func GetLuaType(fd *model.FieldDescriptor) string{
+	switch fd.Type {
+	case 1:
+		fallthrough
+	case 2:
+		fallthrough
+	case 3:
+		fallthrough
+	case 4:
+		fallthrough
+	case 5:
+		return "number"
+	case 6:
+		return "string"
+	case 7:
+		return "boolean"
+	case 9:
+		if fd.IsRepeated{
+			return fd.TypeString() + "[]"
+		} else{
+			return fd.TypeString()
+		}
+	default:
+		log.Errorln("出现位置类型的字段, fd = %s", fd.Name)
+		return ""
+	}
 }
 
 func printTableLua(g *Globals, stream *Stream, tab *model.Table) bool {
