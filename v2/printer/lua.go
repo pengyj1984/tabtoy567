@@ -117,6 +117,30 @@ func GetLuaType(fd *model.FieldDescriptor) string{
 	}
 }
 
+func GetLuaTypeIgnoreRepeate(fd *model.FieldDescriptor) string{
+	switch fd.Type {
+	case 1:
+		fallthrough
+	case 2:
+		fallthrough
+	case 3:
+		fallthrough
+	case 4:
+		fallthrough
+	case 5:
+		return "number"
+	case 6:
+		return "string"
+	case 7:
+		return "boolean"
+	case 9:
+		return fd.TypeString()
+	default:
+		log.Errorln("出现位置类型的字段, fd = %s", fd.Name)
+		return ""
+	}
+}
+
 func printTableLua(g *Globals, stream *Stream, tab *model.Table) bool {
 
 	stream.Printf("	%s = {\n", tab.LocalFD.Name)
@@ -303,7 +327,8 @@ func genLuaIndexCode(stream *Stream, combineStruct *model.Descriptor) bool {
 				for _, key := range fd.Complex.Indexes {
 					mapperVarName := fmt.Sprintf("tab.%sBy%s", fd.Name, key.Name)
 
-					stream.Printf("\n-- %s\n", key.Name)
+					//stream.Printf("\n-- %s\n", key.Name)
+					stream.Printf("---@type table<%s, %s>\n", GetLuaType(key), GetLuaTypeIgnoreRepeate(fd))
 					stream.Printf("%s = {}\n", mapperVarName)
 					stream.Printf("for _, rec in pairs(tab.%s) do\n", fd.Name)
 					stream.Printf("\t%s[rec.%s] = rec\n", mapperVarName, key.Name)
