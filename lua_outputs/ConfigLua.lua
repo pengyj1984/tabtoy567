@@ -721,41 +721,49 @@ local tab = {
 
 }
 
+
 ---@type table<number, FightCommandDefine>
 tab.FightCommandBysort = {}
 for _, rec in pairs(tab.FightCommand) do
 	tab.FightCommandBysort[rec.sort] = rec
 end
+
 ---@type table<number, GoodsCommandDefine>
 tab.GoodsCommandBysort = {}
 for _, rec in pairs(tab.GoodsCommand) do
 	tab.GoodsCommandBysort[rec.sort] = rec
 end
+
 ---@type table<number, HeroCommandDefine>
 tab.HeroCommandBysort = {}
 for _, rec in pairs(tab.HeroCommand) do
 	tab.HeroCommandBysort[rec.sort] = rec
 end
+
 ---@type table<number, TestSheetDefine>
 tab.TestSheetBysort = {}
 for _, rec in pairs(tab.TestSheet) do
 	tab.TestSheetBysort[rec.sort] = rec
 end
+
 ---@type table<number, TestCommandDefine>
 tab.TestCommandBysort = {}
 for _, rec in pairs(tab.TestCommand) do
 	tab.TestCommandBysort[rec.sort] = rec
 end
+
 ---@type table<number, SealwareCommandDefine>
 tab.SealwareCommandBysort = {}
 for _, rec in pairs(tab.SealwareCommand) do
 	tab.SealwareCommandBysort[rec.sort] = rec
 end
+
 ---@type table<number, LevelCommandDefine>
 tab.LevelCommandBysort = {}
 for _, rec in pairs(tab.LevelCommand) do
 	tab.LevelCommandBysort[rec.sort] = rec
 end
+
 ---@type table<number, TestCommand2Define>
 tab.TestCommand2Bysort = {}
 for _, rec in pairs(tab.TestCommand2) do

@@ -328,7 +328,7 @@ func genLuaIndexCode(stream *Stream, combineStruct *model.Descriptor) bool {
 					mapperVarName := fmt.Sprintf("tab.%sBy%s", fd.Name, key.Name)
 
 					//stream.Printf("\n-- %s\n", key.Name)
-					stream.Printf("---@type table<%s, %s>\n", GetLuaType(key), GetLuaTypeIgnoreRepeate(fd))
+					stream.Printf("\n---@type table<%s, %s>\n", GetLuaType(key), GetLuaTypeIgnoreRepeate(fd))
 					stream.Printf("%s = {}\n", mapperVarName)
 					stream.Printf("for _, rec in pairs(tab.%s) do\n", fd.Name)
 					stream.Printf("\t%s[rec.%s] = rec\n", mapperVarName, key.Name)
