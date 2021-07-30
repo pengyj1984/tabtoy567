@@ -39,7 +39,7 @@ func (self *File) GlobalFileDesc() *model.FileDescriptor {
 }
 
 // 处理表(标签页)的类型信息
-func (self *File) ExportLocalType(mainFile *File, tableData *model.SerializeTableData) bool {
+func (self *File) ExportLocalType(mainFile *File, tableData *model.SerializeTableData, g *printer.Globals) bool {
 
 	//var sheetCount int
 
@@ -127,6 +127,10 @@ func (self *File) ExportLocalType(mainFile *File, tableData *model.SerializeTabl
 	// File描述符的名字必须放在类型里, 因为这里始终会被调用, 但是如果数据表缺失, 是不会更新Name的
 	self.LocalFD.Name = self.LocalFD.Pragma.GetString("TableName")
 	self.LocalFD.SerializeData = tableData
+	tag, ok := g.OutputTags[self.LocalFD.Name]
+	if ok{
+		self.LocalFD.Pragma.KVPair.SetString("OutputTag", tag)
+	}
 
 	return true
 }
@@ -136,7 +140,7 @@ func (self *File) ExportGlobalType(g *printer.Globals) bool {
 
 	var typeSheet *TypeSheet
 	// 解析类型表
-	// 这一步只有处理globals表的时候需要, 其他时候可以考虑去掉...... 想一想怎么去合理
+	// 这一步只有处理globals表的时候需要, 其他文件不管
 	for _, rawSheet := range self.coreFile.Sheets {
 
 		if isTypeSheet(rawSheet.Name) {
@@ -154,7 +158,11 @@ func (self *File) ExportGlobalType(g *printer.Globals) bool {
 
 			sheetCount++
 
+		} else if isOutputSheet(rawSheet.Name){
+			//readingLine := true
+
 		}
+
 	}
 
 	// 2021.6.16 -- 类型信息统一放在 globals.xlsx 中, 就不要求每个文件都有这个页签了
@@ -211,6 +219,10 @@ func (self *File) CheckValueRepeat(fd *model.FieldDescriptor, value string) bool
 
 func isTypeSheet(name string) bool {
 	return strings.TrimSpace(name) == model.TypeSheetName
+}
+
+func isOutputSheet(name string) bool{
+	return strings.TrimSpace(name) == model.OutputSheetName
 }
 
 func NewFile(filename string, cacheDir string) (f *File, fromCache bool) {

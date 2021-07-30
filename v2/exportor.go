@@ -89,7 +89,7 @@ func Run(g *printer.Globals) bool {
 		// 电子表格数据导出到Table对象
 		if strings.ToLower(file.FileName) == "globals.xlsx" && !file.ExportGlobalType(g) {
 			return false
-		} else if !file.ExportLocalType(nil, file.LocalFD.SerializeData) {
+		} else if !file.ExportLocalType(nil, file.LocalFD.SerializeData, g) {
 			return false
 		}
 		// 整合类型信息和数据

@@ -26,6 +26,9 @@ type Globals struct {
 	PackageName        string
 	ModList            []string
 
+	// 2021.7.30 读输出标记页签内容, 标记每个表的输出内容
+	OutputTags		   map[string]string
+
 	/////////////////////////////////////////////////
 	Data *model.SerializeData // 记录的中间信息
 	/////////////////////////////////////////////////
