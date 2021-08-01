@@ -31,3 +31,7 @@ void Start()
             table.Config.Deserialize(configTable, reader);
         }
     }
+	
+使用说明:
+1. 必须包含 globals.xlsx, 其中必须包含 @Types 标签页, 记录所有类型信息
+2. 在 globals.xlsx 可以选择性的包含一个 @OutputTag 标签页, 用来标记特定的表格输出到特定的语言中。如果没有, 则表示所有表格输出到所有语言中。
