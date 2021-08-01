@@ -42,11 +42,6 @@ namespace table
 		public List<TestCommandDefine> TestCommand = new List<TestCommandDefine>(); 
 		
 		/// <summary> 
-		/// SealwareCommand
-		/// </summary>
-		public List<SealwareCommandDefine> SealwareCommand = new List<SealwareCommandDefine>(); 
-		
-		/// <summary> 
 		/// LevelCommand
 		/// </summary>
 		public List<LevelCommandDefine> LevelCommand = new List<LevelCommandDefine>(); 
@@ -138,22 +133,6 @@ namespace table
 
             return def;
         }
-		Dictionary<int, SealwareCommandDefine> _SealwareCommandBysort = new Dictionary<int, SealwareCommandDefine>();
-        public SealwareCommandDefine GetSealwareCommandBysort(int sort, SealwareCommandDefine def = default(SealwareCommandDefine))
-        {
-            SealwareCommandDefine ret;
-            if ( _SealwareCommandBysort.TryGetValue( sort, out ret ) )
-            {
-                return ret;
-            }
-			
-			if ( def == default(SealwareCommandDefine) )
-			{
-				TableLogger.ErrorLine("GetSealwareCommandBysort failed, sort: {0}", sort);
-			}
-
-            return def;
-        }
 		Dictionary<int, LevelCommandDefine> _LevelCommandBysort = new Dictionary<int, LevelCommandDefine>();
         public LevelCommandDefine GetLevelCommandBysort(int sort, LevelCommandDefine def = default(LevelCommandDefine))
         {
@@ -188,7 +167,7 @@ namespace table
         }
 		
 		public string GetBuildID(){
-			return "ad40a4ab4c37ce06da7038c8946f29ad";
+			return "d162f0ddaed105abcef4f9e639bc5aa0";
 		}
 	
 		#endregion
@@ -238,11 +217,6 @@ namespace table
                 	case 0xa0024:
                 	{
 						ins.TestCommand.Add( reader.ReadStruct<TestCommandDefine>(TestCommandDefineDeserializeHandler) );
-                	}
-                	break; 
-                	case 0xa0004:
-                	{
-						ins.SealwareCommand.Add( reader.ReadStruct<SealwareCommandDefine>(SealwareCommandDefineDeserializeHandler) );
                 	}
                 	break; 
                 	case 0xa0005:
@@ -301,15 +275,6 @@ namespace table
 				var element = ins.TestCommand[i];
 				
 				ins._TestCommandBysort.Add(element.sort, element);
-				
-			}
-			
-			// Build SealwareCommand Index
-			for( int i = 0;i< ins.SealwareCommand.Count;i++)
-			{
-				var element = ins.SealwareCommand[i];
-				
-				ins._SealwareCommandBysort.Add(element.sort, element);
 				
 			}
 			
@@ -1777,47 +1742,6 @@ namespace table
 
 			
 		}
-		static tabtoy.DeserializeHandler<SealwareCommandDefine> _SealwareCommandDefineDeserializeHandler;
-		static tabtoy.DeserializeHandler<SealwareCommandDefine> SealwareCommandDefineDeserializeHandler
-		{
-			get
-			{
-				if (_SealwareCommandDefineDeserializeHandler == null )
-				{
-					_SealwareCommandDefineDeserializeHandler = new tabtoy.DeserializeHandler<SealwareCommandDefine>(Deserialize);
-				}
-
-				return _SealwareCommandDefineDeserializeHandler;
-			}
-		}
-		public static void Deserialize( SealwareCommandDefine ins, tabtoy.DataReader reader )
-		{
-			
- 			int tag = -1;
-            while ( -1 != (tag = reader.ReadTag()))
-            {
-                switch (tag)
-                { 
-                	case 0x10001:
-                	{
-						ins.sort = reader.ReadInt32();
-                	}
-                	break; 
-                	case 0x60002:
-                	{
-						ins.text = reader.ReadString();
-                	}
-                	break; 
-                	case 0x10003:
-                	{
-						ins.sealwareId = reader.ReadInt32();
-                	}
-                	break; 
-                }
-             } 
-
-			
-		}
 		static tabtoy.DeserializeHandler<LevelCommandDefine> _LevelCommandDefineDeserializeHandler;
 		static tabtoy.DeserializeHandler<LevelCommandDefine> LevelCommandDefineDeserializeHandler
 		{
@@ -1909,7 +1833,6 @@ namespace table
 				HeroCommand.Clear(); 		
 				TestSheet.Clear(); 		
 				TestCommand.Clear(); 		
-				SealwareCommand.Clear(); 		
 				LevelCommand.Clear(); 		
 				TestCommand2.Clear(); 
 			
@@ -1918,7 +1841,6 @@ namespace table
 				_HeroCommandBysort.Clear(); 
 				_TestSheetBysort.Clear(); 
 				_TestCommandBysort.Clear(); 
-				_SealwareCommandBysort.Clear(); 
 				_LevelCommandBysort.Clear(); 
 				_TestCommand2Bysort.Clear(); 
 		}
@@ -2677,31 +2599,6 @@ namespace table
 		/// {1}跳转的关卡ID
 		/// </summary>
 		public int levelId = 0; 
-	
-	
-
-	} 
-
-	// Defined in table: SealwareCommand
-	[System.Serializable]
-	public partial class SealwareCommandDefine
-	{
-	
-		
-		/// <summary> 
-		/// {1}命令序数
-		/// </summary>
-		public int sort = 0; 
-		
-		/// <summary> 
-		/// {1}命令描述文本；原则上不超过20个字
-		/// </summary>
-		public string text = ""; 
-		
-		/// <summary> 
-		/// {1}封印物ID
-		/// </summary>
-		public int sealwareId = 0; 
 	
 	
 

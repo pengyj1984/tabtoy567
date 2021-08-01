@@ -12,15 +12,6 @@ import (
 // Defined in table: Config
 type Config struct {
 
-	//FightCommand
-	FightCommand []*FightCommandDefine
-
-	//GoodsCommand
-	GoodsCommand []*GoodsCommandDefine
-
-	//HeroCommand
-	HeroCommand []*HeroCommandDefine
-
 	//TestSheet
 	TestSheet []*TestSheetDefine
 
@@ -412,45 +403,6 @@ type ValueRandom struct {
 	weight int32
 }
 
-// Defined in table: FightCommand
-type FightCommandDefine struct {
-
-	//{1}命令序数
-	sort int32
-
-	//{1}命令描述文本；原则上不超过20个字
-	text string
-
-	//{1}加速倍数
-	speed int32
-}
-
-// Defined in table: GoodsCommand
-type GoodsCommandDefine struct {
-
-	//{1}命令序数
-	sort int32
-
-	//{1}命令描述文本；原则上不超过20个字；
-	text string
-
-	//{1}获得物品ID、获得物品数量； 注意： 1.物品类型：资产、装备，需要各自单独配置，即不可与其他类型物品在同一个数据格中混合配置； 2.经验，获得的数量不能为负，为负时不生效； 3.装备，涉及到带有唯一ID，原则上配置获得数量不能超过99
-	parameter []*reward
-}
-
-// Defined in table: HeroCommand
-type HeroCommandDefine struct {
-
-	//{1}命令序数
-	sort int32
-
-	//{1}命令描述文本；原则上不超过20个字；涉及到带有唯一ID的物品，原则配置获得数量不能超过99，如英雄
-	text string
-
-	//{1}依次为英雄ID、英雄品质、英雄等级、英雄数量； 注意： 1.英雄品质、等级只能配置比初始值高；如果其中一项未填写，则按对应ID的默认数据输入； 2.英雄涉及到带有唯一ID，原则配置获得数量不能超过99
-	parameter []*herodata
-}
-
 // Defined in table: TestSheet
 type TestSheetDefine struct {
 
@@ -533,12 +485,6 @@ type ConfigTable struct {
 
 	// 加载后回调
 	postFuncList []func(*ConfigTable) error
-
-	FightCommandBysort map[int32]*FightCommandDefine
-
-	GoodsCommandBysort map[int32]*GoodsCommandDefine
-
-	HeroCommandBysort map[int32]*HeroCommandDefine
 
 	TestSheetBysort map[int32]*TestSheetDefine
 
@@ -647,54 +593,6 @@ func NewConfigTable() *ConfigTable {
 
 		indexFuncByName: map[string][]func(*ConfigTable) error{
 
-			"FightCommand": {func(tab *ConfigTable) error {
-
-				// FightCommand
-				for _, def := range tab.FightCommand {
-
-					if _, ok := tab.FightCommandBysort[def.sort]; ok {
-						panic(fmt.Sprintf("duplicate index in FightCommandBysort: %v", def.sort))
-					}
-
-					tab.FightCommandBysort[def.sort] = def
-
-				}
-
-				return nil
-			}},
-
-			"GoodsCommand": {func(tab *ConfigTable) error {
-
-				// GoodsCommand
-				for _, def := range tab.GoodsCommand {
-
-					if _, ok := tab.GoodsCommandBysort[def.sort]; ok {
-						panic(fmt.Sprintf("duplicate index in GoodsCommandBysort: %v", def.sort))
-					}
-
-					tab.GoodsCommandBysort[def.sort] = def
-
-				}
-
-				return nil
-			}},
-
-			"HeroCommand": {func(tab *ConfigTable) error {
-
-				// HeroCommand
-				for _, def := range tab.HeroCommand {
-
-					if _, ok := tab.HeroCommandBysort[def.sort]; ok {
-						panic(fmt.Sprintf("duplicate index in HeroCommandBysort: %v", def.sort))
-					}
-
-					tab.HeroCommandBysort[def.sort] = def
-
-				}
-
-				return nil
-			}},
-
 			"TestSheet": {func(tab *ConfigTable) error {
 
 				// TestSheet
@@ -778,33 +676,6 @@ func NewConfigTable() *ConfigTable {
 
 		clearFuncByName: map[string][]func(*ConfigTable) error{
 
-			"FightCommand": {func(tab *ConfigTable) error {
-
-				// FightCommand
-
-				tab.FightCommandBysort = make(map[int32]*FightCommandDefine)
-
-				return nil
-			}},
-
-			"GoodsCommand": {func(tab *ConfigTable) error {
-
-				// GoodsCommand
-
-				tab.GoodsCommandBysort = make(map[int32]*GoodsCommandDefine)
-
-				return nil
-			}},
-
-			"HeroCommand": {func(tab *ConfigTable) error {
-
-				// HeroCommand
-
-				tab.HeroCommandBysort = make(map[int32]*HeroCommandDefine)
-
-				return nil
-			}},
-
 			"TestSheet": {func(tab *ConfigTable) error {
 
 				// TestSheet
@@ -850,12 +721,6 @@ func NewConfigTable() *ConfigTable {
 				return nil
 			}},
 		},
-
-		FightCommandBysort: make(map[int32]*FightCommandDefine),
-
-		GoodsCommandBysort: make(map[int32]*GoodsCommandDefine),
-
-		HeroCommandBysort: make(map[int32]*HeroCommandDefine),
 
 		TestSheetBysort: make(map[int32]*TestSheetDefine),
 

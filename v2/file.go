@@ -1,6 +1,7 @@
 package v2
 
 import (
+	"fmt"
 	"github.com/davyxu/tabtoy/util"
 	"github.com/davyxu/tabtoy/v2/printer"
 	"strings"
@@ -94,6 +95,7 @@ func (self *File) ExportLocalType(mainFile *File, tableData *model.SerializeTabl
 			self.LocalFD.Pragma.KVPair.SetString("TableName", dataSheetName)
 			self.LocalFD.Pragma.KVPair.SetString("Package", "table")
 			self.LocalFD.Pragma.KVPair.SetString("CSClassHeader", "[System.Serializable]")
+			//self.LocalFD.Pragma.KVPair.Parse("OutputTag:['.lua', '.cs', '.json', '.go']")
 			log.Infof("            %s", rawSheet.Name)
 
 			dataHeader := newDataHeadSheet()
@@ -129,7 +131,7 @@ func (self *File) ExportLocalType(mainFile *File, tableData *model.SerializeTabl
 	self.LocalFD.SerializeData = tableData
 	tag, ok := g.OutputTags[self.LocalFD.Name]
 	if ok{
-		self.LocalFD.Pragma.KVPair.SetString("OutputTag", tag)
+		self.LocalFD.Pragma.KVPair.Parse(fmt.Sprintf("OutputTag:%s", tag))
 	}
 
 	return true
@@ -159,10 +161,34 @@ func (self *File) ExportGlobalType(g *printer.Globals) bool {
 			sheetCount++
 
 		} else if isOutputSheet(rawSheet.Name){
-			//readingLine := true
+			// 2021.8.1 增加 OutputTag 标签页
+			for row := 0; row < rawSheet.MaxRow; row++{
+				table := strings.TrimSpace(rawSheet.Row(row).Cells[0].String())
+				if len(table) == 0{
+					// 遇到空单元格就直接忽略后面的
+					break
+				}
 
+				if table[0] == '#'{
+					// 注释行
+					continue
+				}
+
+				tag := strings.TrimSpace(rawSheet.Row(row).Cells[1].String())
+				if len(tag) == 0 || tag[0] == '#'{
+					// 无效内容, 直接跳过
+					continue
+				}
+
+				_, ok := g.OutputTags[table]
+				if ok{
+					log.Infoln("输出列表中已经包含 %s 表设置, 请勿重复设置", table)
+					continue
+				}
+
+				g.OutputTags[table] = tag
+			}
 		}
-
 	}
 
 	// 2021.6.16 -- 类型信息统一放在 globals.xlsx 中, 就不要求每个文件都有这个页签了

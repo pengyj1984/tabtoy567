@@ -359,85 +359,6 @@ local tab = {
 		{ sort = 105, text = "10000个封印物碎片礼包·小", parameter = { { goodsid= 140150002, num= 10000 } } 	}
 	}, 
 
-	HeroCommand = {
-		{ sort = 1, text = "鹰身女妖.水*1", parameter = { { heroid= 130110001, herocolor= 4, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 2, text = "猫女公主.水*1", parameter = { { heroid= 130110002, herocolor= 3, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 3, text = "食人魔首领.水*1", parameter = { { heroid= 130110003, herocolor= 4, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 4, text = "双头食人魔.水*1", parameter = { { heroid= 130110004, herocolor= 3, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 5, text = "食人魔战士.水*1", parameter = { { heroid= 130110005, herocolor= 2, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 6, text = "食人魔.水*1", parameter = { { heroid= 130110006, herocolor= 1, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 7, text = "牛头人萨满.水*1", parameter = { { heroid= 130110007, herocolor= 4, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 8, text = "牛头人勇士.水*1", parameter = { { heroid= 130110008, herocolor= 3, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 9, text = "牛头人战士.水*1", parameter = { { heroid= 130110009, herocolor= 2, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 10, text = "牛头人.水*1", parameter = { { heroid= 130110010, herocolor= 1, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 11, text = "半人马酋长.水*1", parameter = { { heroid= 130110011, herocolor= 4, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 12, text = "半人马猎手.水*1", parameter = { { heroid= 130110012, herocolor= 3, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 13, text = "半人马.水*1", parameter = { { heroid= 130110013, herocolor= 2, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 14, text = "狼人王.水*1", parameter = { { heroid= 130110014, herocolor= 4, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 15, text = "狼人.水*1", parameter = { { heroid= 130110015, herocolor= 3, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 16, text = "兽人战士.水*1", parameter = { { heroid= 130110016, herocolor= 2, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 17, text = "兽人.水*1", parameter = { { heroid= 130110017, herocolor= 1, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 18, text = "鹰身女妖.火*1", parameter = { { heroid= 130111001, herocolor= 4, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 19, text = "猫女公主.火*1", parameter = { { heroid= 130111002, herocolor= 3, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 20, text = "食人魔首领.火*1", parameter = { { heroid= 130111003, herocolor= 4, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 21, text = "双头食人魔.火*1", parameter = { { heroid= 130111004, herocolor= 3, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 22, text = "食人魔战士.火*1", parameter = { { heroid= 130111005, herocolor= 2, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 23, text = "食人魔.火*1", parameter = { { heroid= 130111006, herocolor= 1, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 24, text = "牛头人萨满.火*1", parameter = { { heroid= 130111007, herocolor= 4, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 25, text = "牛头人勇士.火*1", parameter = { { heroid= 130111008, herocolor= 3, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 26, text = "牛头人战士.火*1", parameter = { { heroid= 130111009, herocolor= 2, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 27, text = "牛头人.火*1", parameter = { { heroid= 130111010, herocolor= 1, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 28, text = "半人马酋长.火*1", parameter = { { heroid= 130111011, herocolor= 4, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 29, text = "半人马猎手.火*1", parameter = { { heroid= 130111012, herocolor= 3, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 30, text = "半人马.火*1", parameter = { { heroid= 130111013, herocolor= 2, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 31, text = "狼人王.火*1", parameter = { { heroid= 130111014, herocolor= 4, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 32, text = "狼人.火*1", parameter = { { heroid= 130111015, herocolor= 3, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 33, text = "兽人战士.火*1", parameter = { { heroid= 130111016, herocolor= 2, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 34, text = "兽人.火*1", parameter = { { heroid= 130111017, herocolor= 1, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 35, text = "鹰身女妖.风*1", parameter = { { heroid= 130112001, herocolor= 4, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 36, text = "猫女公主.风*1", parameter = { { heroid= 130112002, herocolor= 3, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 37, text = "食人魔首领.风*1", parameter = { { heroid= 130112003, herocolor= 4, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 38, text = "双头食人魔.风*1", parameter = { { heroid= 130112004, herocolor= 3, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 39, text = "食人魔战士.风*1", parameter = { { heroid= 130112005, herocolor= 2, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 40, text = "食人魔.风*1", parameter = { { heroid= 130112006, herocolor= 1, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 41, text = "牛头人萨满.风*1", parameter = { { heroid= 130112007, herocolor= 4, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 42, text = "牛头人勇士.风*1", parameter = { { heroid= 130112008, herocolor= 3, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 43, text = "牛头人战士.风*1", parameter = { { heroid= 130112009, herocolor= 2, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 44, text = "牛头人.风*1", parameter = { { heroid= 130112010, herocolor= 1, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 45, text = "半人马酋长.风*1", parameter = { { heroid= 130112011, herocolor= 4, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 46, text = "半人马猎手.风*1", parameter = { { heroid= 130112012, herocolor= 3, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 47, text = "半人马.风*1", parameter = { { heroid= 130112013, herocolor= 2, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 48, text = "狼人王.风*1", parameter = { { heroid= 130112014, herocolor= 4, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 49, text = "狼人.风*1", parameter = { { heroid= 130112015, herocolor= 3, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 50, text = "兽人战士.风*1", parameter = { { heroid= 130112016, herocolor= 2, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 51, text = "兽人.风*1", parameter = { { heroid= 130112017, herocolor= 1, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 52, text = "龙裔大祭司.光*1", parameter = { { heroid= 130113001, herocolor= 4, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 53, text = "龙裔牧师.光*1", parameter = { { heroid= 130113002, herocolor= 3, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 54, text = "龙裔巫师.光*1", parameter = { { heroid= 130113003, herocolor= 3, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 55, text = "龙裔将军.光*1", parameter = { { heroid= 130113004, herocolor= 4, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 56, text = "龙裔狂战士.光*1", parameter = { { heroid= 130113005, herocolor= 4, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 57, text = "龙裔盾手.光*1", parameter = { { heroid= 130113006, herocolor= 3, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 58, text = "龙裔骑兵.光*1", parameter = { { heroid= 130113007, herocolor= 4, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 59, text = "蝙蝠骑手.光*1", parameter = { { heroid= 130113008, herocolor= 4, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 60, text = "龙裔游侠.光*1", parameter = { { heroid= 130113009, herocolor= 4, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 61, text = "龙裔矛手.光*1", parameter = { { heroid= 130113010, herocolor= 3, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 62, text = "龙裔法师.光*1", parameter = { { heroid= 130113011, herocolor= 3, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 63, text = "蜘蛛女王.暗*1", parameter = { { heroid= 130114001, herocolor= 4, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 64, text = "死亡骑士.暗*1", parameter = { { heroid= 130114002, herocolor= 4, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 65, text = "屠夫.暗*1", parameter = { { heroid= 130114003, herocolor= 3, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 66, text = "骷髅王.暗*1", parameter = { { heroid= 130114004, herocolor= 4, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 67, text = "骷髅兵.暗*1", parameter = { { heroid= 130114005, herocolor= 3, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 68, text = "骷髅弓手.暗*1", parameter = { { heroid= 130114006, herocolor= 3, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 69, text = "巫妖.暗*1", parameter = { { heroid= 130114007, herocolor= 4, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 70, text = "幽灵女妖.暗*1", parameter = { { heroid= 130114008, herocolor= 3, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 71, text = "阿努比斯.暗*1", parameter = { { heroid= 130114009, herocolor= 4, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 72, text = "木乃伊.暗*1", parameter = { { heroid= 130114010, herocolor= 3, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 73, text = "石像鬼.暗*1", parameter = { { heroid= 130114011, herocolor= 4, herolevel= 1, heronum= 1 } } 	},
-		{ sort = 74, text = "50级鹰身女妖.水*1", parameter = { { heroid= 130110001, herocolor= 4, herolevel= 50, heronum= 1 } } 	},
-		{ sort = 75, text = "50级食人魔首领.水*1", parameter = { { heroid= 130110003, herocolor= 4, herolevel= 50, heronum= 1 } } 	},
-		{ sort = 76, text = "50级牛头人萨满.水*1", parameter = { { heroid= 130110007, herocolor= 4, herolevel= 50, heronum= 1 } } 	}
-	}, 
-
 	TestSheet = {
 		{ sort = 1, text = "克拉肯之斧", sealwareId = 200110001 	},
 		{ sort = 2, text = "阿涅彌伊之怒", sealwareId = 200110002 	},
@@ -732,12 +653,6 @@ end
 tab.GoodsCommandBysort = {}
 for _, rec in pairs(tab.GoodsCommand) do
 	tab.GoodsCommandBysort[rec.sort] = rec
-end
-
----@type table<number, HeroCommandDefine>
-tab.HeroCommandBysort = {}
-for _, rec in pairs(tab.HeroCommand) do
-	tab.HeroCommandBysort[rec.sort] = rec
 end
 
 ---@type table<number, TestSheetDefine>

@@ -916,35 +916,6 @@ namespace table
 
 	
 
-	// Defined in table: SealwareCommand
-	class SealwareCommandDefine
-	{
-	public:
-	
-		/// <summary> 
-		/// {1}命令序数
-		/// </summary>
-		public:
- 		int sort_ = 0; 
-	
-		/// <summary> 
-		/// {1}命令描述文本；原则上不超过20个字
-		/// </summary>
-		public:
- 		std::string text_ = ""; 
-	
-		/// <summary> 
-		/// {1}封印物ID
-		/// </summary>
-		public:
- 		int sealwareId_ = 0; 
-	
-
-	}; 
-	
-
-	
-
 	// Defined in table: LevelCommand
 	class LevelCommandDefine
 	{
@@ -1041,12 +1012,6 @@ namespace table
 		/// </summary>
 		public:
  		std::vector<TestCommandDefine> TestCommand_; 
-		
-		/// <summary> 
-		/// SealwareCommand
-		/// </summary>
-		public:
- 		std::vector<SealwareCommandDefine> SealwareCommand_; 
 		
 		/// <summary> 
 		/// LevelCommand
@@ -1147,23 +1112,6 @@ namespace table
 
             return def;
         }
-		std::map<int, SealwareCommandDefine> _SealwareCommandBysort;
-	public:
-		class SealwareCommandDefine* GetSealwareCommandBysort(int sort, SealwareCommandDefine* def = nullptr)
-        {
-            auto ret = _SealwareCommandBysort.find( sort );
-            if ( ret != _SealwareCommandBysort.end() )
-            {
-                return &ret->second;
-            }
-			
-			if ( def == nullptr )
-			{
-				TableLogger.ErrorLine("GetSealwareCommandBysort failed, sort: %s", sort);
-			}
-
-            return def;
-        }
 		std::map<int, LevelCommandDefine> _LevelCommandBysort;
 	public:
 		class LevelCommandDefine* GetLevelCommandBysort(int sort, LevelCommandDefine* def = nullptr)
@@ -1236,11 +1184,6 @@ namespace table
 						ins.TestCommand_.emplace_back( reader.ReadStruct<TestCommandDefine>(Deserialize) );
                 	}
                 	break; 
-                	case 0xa0004:
-                	{
-						ins.SealwareCommand_.emplace_back( reader.ReadStruct<SealwareCommandDefine>(Deserialize) );
-                	}
-                	break; 
                 	case 0xa0005:
                 	{
 						ins.LevelCommand_.emplace_back( reader.ReadStruct<LevelCommandDefine>(Deserialize) );
@@ -1297,15 +1240,6 @@ namespace table
 				auto element = ins.TestCommand_[i];
 				
 				ins._TestCommandBysort.emplace(std::make_pair(element.sort_, element));
-				
-			}
-			
-			// Build SealwareCommand Index
-			for( size_t i = 0;i< ins.SealwareCommand_.size();i++)
-			{
-				auto element = ins.SealwareCommand_[i];
-				
-				ins._SealwareCommandBysort.emplace(std::make_pair(element.sort_, element));
 				
 			}
 			
@@ -2319,34 +2253,6 @@ namespace table
 			
 		}
 	public:
-		static void Deserialize( SealwareCommandDefine& ins, tabtoy::DataReader& reader )
-		{
- 			int tag = -1;
-            while ( -1 != (tag = reader.ReadTag()))
-            {
-                switch (tag)
-                { 
-                	case 0x10001:
-                	{
-						ins.sort_ = reader.ReadInt32();
-                	}
-                	break; 
-                	case 0x60002:
-                	{
-						ins.text_ = reader.ReadString();
-                	}
-                	break; 
-                	case 0x10003:
-                	{
-						ins.sealwareId_ = reader.ReadInt32();
-                	}
-                	break; 
-                }
-             }
-
-			
-		}
-	public:
 		static void Deserialize( LevelCommandDefine& ins, tabtoy::DataReader& reader )
 		{
  			int tag = -1;
@@ -2406,8 +2312,6 @@ namespace table
 	
 
 	};
-	
-	
 	
 	
 	

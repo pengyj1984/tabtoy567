@@ -206,6 +206,7 @@ func NewGlobals() *Globals {
 		FileDescriptor: model.NewFileDescriptor(),
 		CombineStruct:  model.NewDescriptor(),
 		Data:           model.NewSerializeData(),
+		OutputTags: 	map[string]string{},
 	}
 
 	return self
