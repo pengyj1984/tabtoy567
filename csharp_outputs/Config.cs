@@ -45,11 +45,6 @@ namespace table
 		/// LevelCommand
 		/// </summary>
 		public List<LevelCommandDefine> LevelCommand = new List<LevelCommandDefine>(); 
-		
-		/// <summary> 
-		/// TestCommand2
-		/// </summary>
-		public List<TestCommand2Define> TestCommand2 = new List<TestCommand2Define>(); 
 	
 	
 		#region Index code
@@ -149,25 +144,9 @@ namespace table
 
             return def;
         }
-		Dictionary<int, TestCommand2Define> _TestCommand2Bysort = new Dictionary<int, TestCommand2Define>();
-        public TestCommand2Define GetTestCommand2Bysort(int sort, TestCommand2Define def = default(TestCommand2Define))
-        {
-            TestCommand2Define ret;
-            if ( _TestCommand2Bysort.TryGetValue( sort, out ret ) )
-            {
-                return ret;
-            }
-			
-			if ( def == default(TestCommand2Define) )
-			{
-				TableLogger.ErrorLine("GetTestCommand2Bysort failed, sort: {0}", sort);
-			}
-
-            return def;
-        }
 		
 		public string GetBuildID(){
-			return "d162f0ddaed105abcef4f9e639bc5aa0";
+			return "1a1850598ccc9594658c49033a936ee8";
 		}
 	
 		#endregion
@@ -222,11 +201,6 @@ namespace table
                 	case 0xa0005:
                 	{
 						ins.LevelCommand.Add( reader.ReadStruct<LevelCommandDefine>(LevelCommandDefineDeserializeHandler) );
-                	}
-                	break; 
-                	case 0xa0026:
-                	{
-						ins.TestCommand2.Add( reader.ReadStruct<TestCommand2Define>(TestCommand2DefineDeserializeHandler) );
                 	}
                 	break; 
                 }
@@ -284,15 +258,6 @@ namespace table
 				var element = ins.LevelCommand[i];
 				
 				ins._LevelCommandBysort.Add(element.sort, element);
-				
-			}
-			
-			// Build TestCommand2 Index
-			for( int i = 0;i< ins.TestCommand2.Count;i++)
-			{
-				var element = ins.TestCommand2[i];
-				
-				ins._TestCommand2Bysort.Add(element.sort, element);
 				
 			}
 			
@@ -1783,47 +1748,6 @@ namespace table
 
 			
 		}
-		static tabtoy.DeserializeHandler<TestCommand2Define> _TestCommand2DefineDeserializeHandler;
-		static tabtoy.DeserializeHandler<TestCommand2Define> TestCommand2DefineDeserializeHandler
-		{
-			get
-			{
-				if (_TestCommand2DefineDeserializeHandler == null )
-				{
-					_TestCommand2DefineDeserializeHandler = new tabtoy.DeserializeHandler<TestCommand2Define>(Deserialize);
-				}
-
-				return _TestCommand2DefineDeserializeHandler;
-			}
-		}
-		public static void Deserialize( TestCommand2Define ins, tabtoy.DataReader reader )
-		{
-			
- 			int tag = -1;
-            while ( -1 != (tag = reader.ReadTag()))
-            {
-                switch (tag)
-                { 
-                	case 0x10001:
-                	{
-						ins.sort = reader.ReadInt32();
-                	}
-                	break; 
-                	case 0x60002:
-                	{
-						ins.text = reader.ReadString();
-                	}
-                	break; 
-                	case 0x10003:
-                	{
-						ins.sealwareId = reader.ReadInt32();
-                	}
-                	break; 
-                }
-             } 
-
-			
-		}
 		#endregion
 		#region Clear Code
 		public void Clear( )
@@ -1833,8 +1757,7 @@ namespace table
 				HeroCommand.Clear(); 		
 				TestSheet.Clear(); 		
 				TestCommand.Clear(); 		
-				LevelCommand.Clear(); 		
-				TestCommand2.Clear(); 
+				LevelCommand.Clear(); 
 			
 				_FightCommandBysort.Clear(); 
 				_GoodsCommandBysort.Clear(); 
@@ -1842,7 +1765,6 @@ namespace table
 				_TestSheetBysort.Clear(); 
 				_TestCommandBysort.Clear(); 
 				_LevelCommandBysort.Clear(); 
-				_TestCommand2Bysort.Clear(); 
 		}
 		#endregion
 	
@@ -2624,31 +2546,6 @@ namespace table
 		/// {1}跳转的关卡ID
 		/// </summary>
 		public int levelId = 0; 
-	
-	
-
-	} 
-
-	// Defined in table: TestCommand2
-	[System.Serializable]
-	public partial class TestCommand2Define
-	{
-	
-		
-		/// <summary> 
-		/// {1}命令序数
-		/// </summary>
-		public int sort = 0; 
-		
-		/// <summary> 
-		/// {1}命令描述文本；原则上不超过20个字
-		/// </summary>
-		public string text = ""; 
-		
-		/// <summary> 
-		/// {1}封印物ID
-		/// </summary>
-		public int sealwareId = 0; 
 	
 	
 

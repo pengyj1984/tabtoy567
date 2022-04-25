@@ -23,9 +23,6 @@ type Config struct {
 
 	//LevelCommand
 	LevelCommand []*LevelCommandDefine
-
-	//TestCommand2
-	TestCommand2 []*TestCommand2Define
 }
 
 // Defined in table: Globals
@@ -455,19 +452,6 @@ type LevelCommandDefine struct {
 	levelId int32
 }
 
-// Defined in table: TestCommand2
-type TestCommand2Define struct {
-
-	//{1}命令序数
-	sort int32
-
-	//{1}命令描述文本；原则上不超过20个字
-	text string
-
-	//{1}封印物ID
-	sealwareId int32
-}
-
 // Config 访问接口
 type ConfigTable struct {
 
@@ -493,8 +477,6 @@ type ConfigTable struct {
 	SealwareCommandBysort map[int32]*SealwareCommandDefine
 
 	LevelCommandBysort map[int32]*LevelCommandDefine
-
-	TestCommand2Bysort map[int32]*TestCommand2Define
 }
 
 // 从json文件加载
@@ -656,22 +638,6 @@ func NewConfigTable() *ConfigTable {
 
 				return nil
 			}},
-
-			"TestCommand2": {func(tab *ConfigTable) error {
-
-				// TestCommand2
-				for _, def := range tab.TestCommand2 {
-
-					if _, ok := tab.TestCommand2Bysort[def.sort]; ok {
-						panic(fmt.Sprintf("duplicate index in TestCommand2Bysort: %v", def.sort))
-					}
-
-					tab.TestCommand2Bysort[def.sort] = def
-
-				}
-
-				return nil
-			}},
 		},
 
 		clearFuncByName: map[string][]func(*ConfigTable) error{
@@ -711,15 +677,6 @@ func NewConfigTable() *ConfigTable {
 
 				return nil
 			}},
-
-			"TestCommand2": {func(tab *ConfigTable) error {
-
-				// TestCommand2
-
-				tab.TestCommand2Bysort = make(map[int32]*TestCommand2Define)
-
-				return nil
-			}},
 		},
 
 		TestSheetBysort: make(map[int32]*TestSheetDefine),
@@ -729,7 +686,5 @@ func NewConfigTable() *ConfigTable {
 		SealwareCommandBysort: make(map[int32]*SealwareCommandDefine),
 
 		LevelCommandBysort: make(map[int32]*LevelCommandDefine),
-
-		TestCommand2Bysort: make(map[int32]*TestCommand2Define),
 	}
 }
