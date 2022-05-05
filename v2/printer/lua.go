@@ -2,6 +2,7 @@ package printer
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/davyxu/tabtoy/util"
 	"github.com/davyxu/tabtoy/v2/i18n"
@@ -44,7 +45,8 @@ func (self *luaPrinter) Run(g *Globals) *Stream {
 	for _, v := range(g.Descriptors){
 		stream.Printf("---@class %s\n", v.Name)
 		for _, f := range(v.Fields){
-			stream.Printf("---@field %s %s\n", f.Name, GetLuaType(f))
+			comment := strings.Replace(f.Comment, "\n", ";", -1)
+			stream.Printf("---@field %s %s %s\n", f.Name, GetLuaType(f), comment)
 		}
 
 		stream.Printf("\n\n")

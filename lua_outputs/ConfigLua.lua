@@ -2,244 +2,244 @@
 -- Version: 
 
 ---@class Config
----@field FightCommand FightCommandDefine[]
----@field GoodsCommand GoodsCommandDefine[]
----@field HeroCommand HeroCommandDefine[]
----@field TestSheet TestSheetDefine[]
----@field TestCommand TestCommandDefine[]
----@field SealwareCommand SealwareCommandDefine[]
----@field LevelCommand LevelCommandDefine[]
----@field TestCommand2 TestCommand2Define[]
+---@field FightCommand FightCommandDefine[] FightCommand
+---@field GoodsCommand GoodsCommandDefine[] GoodsCommand
+---@field HeroCommand HeroCommandDefine[] HeroCommand
+---@field TestSheet TestSheetDefine[] TestSheet
+---@field TestCommand TestCommandDefine[] TestCommand
+---@field SealwareCommand SealwareCommandDefine[] SealwareCommand
+---@field LevelCommand LevelCommandDefine[] LevelCommand
+---@field TestCommand2 TestCommand2Define[] TestCommand2
 
 
 ---@class WaveGroup
----@field id number
----@field count number
----@field index number
----@field test number
----@field time number
----@field delay number
+---@field id number 
+---@field count number 
+---@field index number 
+---@field test number 
+---@field time number 
+---@field delay number 
 
 
 ---@class Vec3
----@field x number
----@field y number
----@field z number
+---@field x number 
+---@field y number 
+---@field z number 
 
 
 ---@class Vec4
----@field x number
----@field y number
----@field z number
----@field v number
+---@field x number 
+---@field y number 
+---@field z number 
+---@field v number 
 
 
 ---@class attr
----@field attrid number
----@field attrnum number
----@field attrper number
+---@field attrid number 
+---@field attrnum number 
+---@field attrper number 
 
 
 ---@class composeeffect
----@field attr string
----@field per number
+---@field attr string 
+---@field per number 
 
 
 ---@class condition
----@field mainpart number
----@field conditionpattern number
----@field judge number
----@field parameter number
+---@field mainpart number 條件主體(1:自身;2:怪物ID;3:英雄類型;4:怪物類型;5:路徑;6:龍寶寶;)
+---@field conditionpattern number 條件類型(1:血量;2:數量;3:長度;4:波數;)
+---@field judge number 判定(1:大於;2:大於等於;3:等於;4:小於等於;5:小於;)
+---@field parameter number 參數
 
 
 ---@class incident
----@field mainpart number
----@field eventpattern number
----@field parameter number
----@field talk string
----@field target number
----@field targetparameter number
+---@field mainpart number 主體(1:自身;2:怪物ID;)
+---@field eventpattern number 事件(1:技能ID;2:說話;)
+---@field parameter number 參數
+---@field talk string 說話，配置文本字串
+---@field target number 目標(1:無;2:怪物ID;)
+---@field targetparameter number 參數
 
 
 ---@class costlist
----@field propertyid number
----@field num number
+---@field propertyid number 
+---@field num number 
 
 
 ---@class reward
----@field goodsid number
----@field num number
+---@field goodsid number 
+---@field num number 
 
 
 ---@class Vec2
----@field x number
----@field y number
+---@field x number 
+---@field y number 
 
 
 ---@class strike
----@field condition number
----@field judge number
----@field parameter number
----@field rate number
+---@field condition number 條件類型(1:自身血量;2:友方數量;3:暴击触发;4：到达终点触发)
+---@field judge number 判定(1:大於;2:大於等於;3:等於;4:小於等於;5:小於;)
+---@field parameter number 參數
+---@field rate number 暴击触发/到达终点只需要填概率
 
 
 ---@class trammelsskill
----@field heronum number
----@field skillid number
+---@field heronum number 
+---@field skillid number 
 
 
 ---@class dropItems
----@field itemid number
----@field count number
----@field weight number
----@field minNum number
+---@field itemid number 
+---@field count number 
+---@field weight number 
+---@field minNum number 
 
 
 ---@class guideparameter
----@field parameter1 number
----@field parameter2 string
+---@field parameter1 number 
+---@field parameter2 string 
 
 
 ---@class limitparameter
----@field intlimit number
----@field stringlimit string
+---@field intlimit number 
+---@field stringlimit string 
 
 
 ---@class herodata
----@field heroid number
----@field herocolor number
----@field herolevel number
----@field heronum number
+---@field heroid number 
+---@field herocolor number 
+---@field herolevel number 
+---@field heronum number 
 
 
 ---@class black
----@field x number
----@field y number
----@field z number
----@field speed number
----@field duration number
+---@field x number 
+---@field y number 
+---@field z number 
+---@field speed number 
+---@field duration number 
 
 
 ---@class numweight
----@field leveupnum number
----@field weight number
+---@field leveupnum number 
+---@field weight number 
 
 
 ---@class guidecondition
----@field cond string
----@field num number
----@field id number
+---@field cond string 
+---@field num number 
+---@field id number 
 
 
 ---@class guidePicPos
----@field x number
----@field y number
+---@field x number 
+---@field y number 
 
 
 ---@class guidelimit
----@field cond string
----@field num number
----@field id number
+---@field cond string 
+---@field num number 
+---@field id number 
 
 
 ---@class groups
----@field groupid string
----@field num number
+---@field groupid string 
+---@field num number 
 
 
 ---@class talentrevise
----@field name string
----@field pattern number
----@field magicnum number
----@field seriesnum number
----@field seriesname string
----@field parameter string
+---@field name string 对应标签页的这个标签
+---@field pattern number 修改类型（1:替代；2:新增；3:数值增加；4：数值乘积）新增只应用于数组中
+---@field magicnum number 表示修改的是第几项魔法，可为空，空值表示第一项，只在修改魔法列表时生效 修改的魔法与项数对应
+---@field seriesnum number 表示要改的是第几个数列，可为空，空值表示不是数组，但是如果是数据类型是数组则不能留空
+---@field seriesname string 数列名，可为空，空值表示直接修改数值，无数组名
+---@field parameter string 
 
 
 ---@class boom
----@field id number
----@field num number
+---@field id number 
+---@field num number 可为空，空值表示只要暴击就能触发，不限次数。 在计数时，技能本身那次不算
 
 
 ---@class direction
----@field fx number
----@field hero number
----@field fx2 number
----@field linenum number
+---@field fx number 可为空，空值表示以英雄为中心，找参照点的方向，以12点为1，顺时针，共计8个方向（1-8）
+---@field hero number 可为空，空值表示以英雄为中心，找参照点的距离，在这个方向上距英雄几个格子距离的点，为参照点
+---@field fx2 number 可为空，以12点为1，顺时针，共计8个方向（1-8）
+---@field linenum number 可为空，参照点方向上的格子数量（连续）
 
 
 ---@class cash
----@field language string
----@field pattern number
----@field price number
+---@field language string 
+---@field pattern number 
+---@field price number 
 
 
 ---@class HireHeroLimit
----@field herocolor number
----@field weight number
+---@field herocolor number 雇佣任务用
+---@field weight number 
 
 
 ---@class Consumption
----@field id number
----@field value number
+---@field id number 商店，限时购买中，商品筛选机制使用，配置与玩家等级配置表中
+---@field value number 
 
 
 ---@class typeRandom
----@field attrid number
----@field weight number
+---@field attrid number 
+---@field weight number 
 
 
 ---@class ValueRandom
----@field num number
----@field weight number
+---@field num number 如果对应的属性是固定值，则固定加成；如果对应的属性是比例值，则比例加成
+---@field weight number 
 
 
 ---@class FightCommandDefine
----@field sort number
----@field text string
----@field speed number
+---@field sort number {1}命令序数
+---@field text string {1}命令描述文本；原则上不超过20个字
+---@field speed number {1}加速倍数
 
 
 ---@class GoodsCommandDefine
----@field sort number
----@field text string
----@field parameter reward[]
+---@field sort number {1}命令序数
+---@field text string {1}命令描述文本；原则上不超过20个字；
+---@field parameter reward[] {1}获得物品ID、获得物品数量； 注意： 1.物品类型：资产、装备，需要各自单独配置，即不可与其他类型物品在同一个数据格中混合配置； 2.经验，获得的数量不能为负，为负时不生效； 3.装备，涉及到带有唯一ID，原则上配置获得数量不能超过99
 
 
 ---@class HeroCommandDefine
----@field sort number
----@field text string
----@field parameter herodata[]
+---@field sort number {1}命令序数
+---@field text string {1}命令描述文本；原则上不超过20个字；涉及到带有唯一ID的物品，原则配置获得数量不能超过99，如英雄
+---@field parameter herodata[] {1}依次为英雄ID、英雄品质、英雄等级、英雄数量； 注意： 1.英雄品质、等级只能配置比初始值高；如果其中一项未填写，则按对应ID的默认数据输入； 2.英雄涉及到带有唯一ID，原则配置获得数量不能超过99
 
 
 ---@class TestSheetDefine
----@field sort number
----@field text string
----@field sealwareId number
+---@field sort number {1}命令序数
+---@field text string {1}命令描述文本；原则上不超过20个字
+---@field sealwareId number {1}封印物ID
 
 
 ---@class TestCommandDefine
----@field sort number
----@field text string
----@field levelId number
+---@field sort number {1}命令序数
+---@field text string {1}命令描述文本；原则上不超过20个字
+---@field levelId number {1}跳转的关卡ID
 
 
 ---@class SealwareCommandDefine
----@field sort number
----@field text string
----@field sealwareId number
+---@field sort number {1}命令序数
+---@field text string {1}命令描述文本；原则上不超过20个字
+---@field sealwareId number {1}封印物ID
 
 
 ---@class LevelCommandDefine
----@field sort number
----@field text string
----@field levelId number
+---@field sort number {1}命令序数
+---@field text string {1}命令描述文本；原则上不超过20个字
+---@field levelId number {1}跳转的关卡ID
 
 
 ---@class TestCommand2Define
----@field sort number
----@field text string
----@field sealwareId number
+---@field sort number {1}命令序数
+---@field text string {1}命令描述文本；原则上不超过20个字
+---@field sealwareId number {1}封印物ID
 
 
 ---@type Config
