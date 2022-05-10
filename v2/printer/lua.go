@@ -42,9 +42,9 @@ func (self *luaPrinter) Run(g *Globals) *Stream {
 
 	stream.Printf("\n")
 	// 添加lua注解
-	for _, v := range(g.Descriptors){
+	for _, v := range g.Descriptors {
 		stream.Printf("---@class %s\n", v.Name)
-		for _, f := range(v.Fields){
+		for _, f := range v.Fields {
 			comment := strings.Replace(f.Comment, "\n", ";", -1)
 			stream.Printf("---@field %s %s %s\n", f.Name, GetLuaType(f), comment)
 		}
@@ -91,7 +91,7 @@ func (self *luaPrinter) Run(g *Globals) *Stream {
 	return stream
 }
 
-func GetLuaType(fd *model.FieldDescriptor) string{
+func GetLuaType(fd *model.FieldDescriptor) string {
 	switch fd.Type {
 	case 1:
 		fallthrough
@@ -102,15 +102,27 @@ func GetLuaType(fd *model.FieldDescriptor) string{
 	case 4:
 		fallthrough
 	case 5:
-		return "number"
+		if fd.IsRepeated {
+			return "number[]"
+		} else {
+			return "number"
+		}
 	case 6:
-		return "string"
+		if fd.IsRepeated {
+			return "string[]"
+		} else {
+			return "string"
+		}
 	case 7:
-		return "boolean"
+		if fd.IsRepeated {
+			return "boolean[]"
+		} else {
+			return "boolean"
+		}
 	case 9:
-		if fd.IsRepeated{
+		if fd.IsRepeated {
 			return fd.TypeString() + "[]"
-		} else{
+		} else {
 			return fd.TypeString()
 		}
 	default:
@@ -119,7 +131,7 @@ func GetLuaType(fd *model.FieldDescriptor) string{
 	}
 }
 
-func GetLuaTypeIgnoreRepeate(fd *model.FieldDescriptor) string{
+func GetLuaTypeIgnoreRepeate(fd *model.FieldDescriptor) string {
 	switch fd.Type {
 	case 1:
 		fallthrough
