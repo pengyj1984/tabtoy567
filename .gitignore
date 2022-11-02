@@ -28,4 +28,4 @@ tabtoy
 *.DS_Store
 protoc
 ~*.xlsx
-.idea/
+.idea
